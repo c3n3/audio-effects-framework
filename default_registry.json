@@ -1,0 +1,16 @@
+{
+    "sound recording": {
+        "loop": {
+            "mechanism": "button",
+            "id": "2"
+        },
+        "record": {
+            "mechanism": "button",
+            "id": "2"
+        },
+        "save": {
+            "mechanism": "button",
+            "id": "8"
+        }
+    }
+}
