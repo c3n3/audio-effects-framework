@@ -1,16 +1,23 @@
 {
     "sound recording": {
         "loop": {
-            "mechanism": "button",
-            "id": "2"
+            "input_type": "button",
+            "id": "1001"
         },
         "record": {
-            "mechanism": "button",
-            "id": "2"
+            "input_type": "button",
+            "id": "1001"
         },
         "save": {
-            "mechanism": "button",
-            "id": "8"
+            "input_type": "button",
+            "id": "1003"
+        }
+    },
+    "recordings": {
+        "Recording_0.wav": {
+            "id": "1003",
+            "input_type": "button",
+            "path": "../recordings/"
         }
     }
 }

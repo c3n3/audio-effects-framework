@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Recordings",
+        "path": "../recordings/",
+        "type": "recordings",
+        "id": "1003",
+        "input_type": "button"
+    }
+]

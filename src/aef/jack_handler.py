@@ -14,9 +14,10 @@ class JackHandler():
         os.system("qjackctl --start --preset=guitar-module &")
         while (os.system("jack_control status > /dev/null") != 0):
             pass
-        os.system("pd {} -jack -nojackconnect -jackname global_pd {} &"
-        .format("-nogui" if GlobalSettings.settings['debug_pd'].value == 'False' else "",
-                GlobalSettings.settings['result_pd']))
+        command = ("pd {} -jack -nojackconnect -jackname global_pd {} &"
+            .format("-nogui" if GlobalSettings.settings['debug_pd'].value == 'False' else "",
+                    GlobalSettings.settings['global_pd'].value))
+        result = os.system(command)
         JackHandler.globalPdPid = os.popen("pidof pd").read()
 
 

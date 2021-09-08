@@ -1,3 +1,4 @@
+from genericpath import isfile
 import os
 from time import sleep
 from aitpi.postal_service import PostalService
@@ -9,7 +10,7 @@ class Recorder():
     """
     prefix = "__playback__"
     state = "IDLE"
-    recordingFolder = "./recordings/"
+    recordingFolder = "../recordings/"
     recordingExt = ".wav"
     recordingCount = 0
     inited = False
@@ -19,10 +20,16 @@ class Recorder():
     def save():
         """Saves a new recording from the looper
         """
-        if (os.path.isfile('./guitar/pd/Global/loop.wav')):
+        if (os.path.isfile('../Global/loop.wav')):
             # Save loop file
-            name = 'Recording_{}{}'.format(Recorder.recordingCount, Recorder.recordingExt)
-            os.system('cp ./guitar/pd/Global/loop.wav {}{}'.format(Recorder.recordingFolder, name))
+            while (True):
+                name = 'Recording_{}{}'.format(Recorder.recordingCount, Recorder.recordingExt)
+                file = '{}{}'.format(Recorder.recordingFolder, name)
+                Recorder.recordingCount += 1
+                if (os.path.isfile(file) == False):
+                    break
+                
+            os.system('cp ../Global/loop.wav {}'.format(file))
             PostalService.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 
     @staticmethod
@@ -38,7 +45,7 @@ class Recorder():
         elif (os.path.isfile(file)):
             Recorder.lastPlayed = file
             copyName = "playback.wav"
-            copyFile = "./guitar/pd/Global/%s" % copyName
+            copyFile = "../Global/%s" % copyName
             os.system("cp {} {}".format(file, copyFile))
             sleep(0.1)
             PdHandler.pdAction("global_playback", "open {}, global_playback 1".format(copyName), 3000) # start playback
@@ -57,13 +64,17 @@ class Recorder():
         Args:
             msg (Message): The message to handle
         """
+
+        # We only care about UP
         if (msg.event == "DOWN"):
             return
-        if (msg.data == 'save'):
+        if (msg.name == 'save'):
             Recorder.save()
         else:
-            Recorder.playback("{}{}".format(Recorder.recordingFolder, msg.data))
+            Recorder.playback("{}{}".format(Recorder.recordingFolder, msg.name))
 
-if (Recorder.inited == False):
-    Recorder.inited = True
-    PostalService.addConsumer([RecordingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, Recorder)
+    @staticmethod
+    def init():
+        if (Recorder.inited == False):
+            Recorder.inited = True
+            PostalService.addConsumer([RecordingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, Recorder)

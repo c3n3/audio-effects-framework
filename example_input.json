@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Button0",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "1",
+        "reg_link": "loop"
+    },
+    {
+        "name": "Button1",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "2",
+        "reg_link": "record"
+    },
+    {
+        "name": "Button2",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "3",
+        "reg_link": "save"
+    },
+    {
+        "name": "Button3",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "4",
+        "reg_link": ""
+    }
+]

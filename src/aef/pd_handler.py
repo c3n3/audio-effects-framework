@@ -124,6 +124,7 @@ class PdHandler():
             port (int, optional): The port to send it over. Defaults to 3000.
         """
         command = "echo {} {} \; | pdsend {}".format(prefix, action, port)
+        print("PD command: ", command)
         os.system(command)
     
     @staticmethod

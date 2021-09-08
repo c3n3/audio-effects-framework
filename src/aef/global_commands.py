@@ -1,3 +1,4 @@
+from genericpath import isfile
 import os
 from aitpi.postal_service import PostalService
 from aef.msg_list import InputPuredataMessage
@@ -23,6 +24,7 @@ class GlobalCommands():
         """Starts recording audio
         """
         if (not GlobalCommands.isRecording):
+            print("Starting this")
             # PdHandler.pdAction(Looper.prefix + "write", "open loop.wav, __looper__write start", 2999) #start record
             PdHandler.pdAction("global_record", "open loop.wav, global_record start", 3000) #start record
             PostalService.sendMessage(OutputMessage('*', "STATUS"))
@@ -60,12 +62,15 @@ class GlobalCommands():
 
     @staticmethod
     def playLoop():
-        if (os.path.isfile('./guitar/pd/Global/loop.wav')):
+        # TODO: Make the loop.wav location a setting 
+        if (os.path.isfile('../Global/loop.wav')):
             PdHandler.pdAction("global_loop", "stop", 3000)
-            os.system('cp ./guitar/pd/Global/loop.wav ./guitar/pd/Global/out.wav') # rename file
+            os.system('cp ../Global/loop.wav ../Global/out.wav') # rename file
             sleep(0.2)
             PdHandler.pdAction("global_loop", "open out.wav, global_loop 1", 3000) # start playback
             GlobalCommands.isPlaying = True
+        else:
+            print("Cannot find looping file")
 
 
     @staticmethod
@@ -89,12 +94,17 @@ class GlobalCommands():
         if (msg.event == "DOWN"):
             return
         if (msg.name == 'record'):
+            print("Recording")
             GlobalCommands.record()
         elif (msg.name == 'loop'):
+            print("Looping")
             GlobalCommands.playback()
         elif (msg.name == 'volume'):
+            print("Changing volume")
             GlobalCommands.volume(msg.event)
 
     @staticmethod
     def init():
+        if (not os.path.isfile('../recordings/')):
+            os.system("mkdir ../recordings/")
         PostalService.addConsumer([InputPuredataMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, GlobalCommands)

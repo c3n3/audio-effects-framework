@@ -1,6 +1,6 @@
 import os
 from aef.logger import Logger
-
+import sys
 class AllSettings():
     """Handles command line arguments
     """
@@ -112,7 +112,7 @@ class GlobalSettings():
         """
         import os
         dirname = os.path.dirname(__file__)
-        globalPd = os.path.join(dirname, '../../Global')
+        globalPd = os.path.join(dirname, '../../Global/Global.pd')
         reset_pd = os.path.join(dirname, '../../master.pd')
         defaultPd = os.path.join(dirname, '../../Default')
         scripts = os.path.join(dirname, '../../Scripts')
@@ -120,6 +120,8 @@ class GlobalSettings():
         GlobalSettings.settings['global_pd'] = globalPd
         GlobalSettings.settings['default_pd'] = defaultPd
         GlobalSettings.settings['scripts_dir'] = scripts
+
+        GlobalSettings.settings.takeArgs(sys.argv)
 
     def __init__(self) -> None:
         raise "Static class"
