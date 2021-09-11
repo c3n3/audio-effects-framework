@@ -39,8 +39,11 @@ class GlobalCommands():
 
     @staticmethod
     def volume(leftOrRight):
-
-        PdHandler.pdAction("global_volume", 50, 3000)
+        if (leftOrRight == "LEFT"):
+            GlobalCommands._volume = GlobalCommands._volume - 5 if GlobalCommands._volume != 0 else 0
+        elif (leftOrRight == "RIGHT"):
+            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 100 else 100
+        PdHandler.pdAction("__Default__volume", GlobalCommands._volume / 100, 2999)
 
     @staticmethod
     def playback():

@@ -11,10 +11,19 @@
         "save": {
             "input_type": "button",
             "id": "1003"
+        },
+        "volume": {
+            "input_type": "encoder",
+            "id": "1001"
         }
     },
     "recordings": {
         "Recording_0.wav": {
+            "id": "1003",
+            "input_type": "button",
+            "path": "../recordings/"
+        },
+        "Recording_1.wav": {
             "id": "1003",
             "input_type": "button",
             "path": "../recordings/"

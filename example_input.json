@@ -26,5 +26,13 @@
         "mechanism": "key_interrupt",
         "trigger": "4",
         "reg_link": ""
+    },
+    {
+        "name": "Encoder0",
+        "type": "encoder",
+        "mechanism": "key_interrupt",
+        "left_trigger": "o",
+        "right_trigger": "p",
+        "reg_link": "volume"
     }
 ]
