@@ -28,11 +28,26 @@
         "reg_link": "Recording_0.wav"
     },
     {
+        "name": "Button4",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "5",
+        "reg_link": "Tremolo.pd"
+    },
+    {
         "name": "Encoder0",
         "type": "encoder",
         "mechanism": "key_interrupt",
         "left_trigger": "o",
         "right_trigger": "p",
         "reg_link": "volume"
+    },
+    {
+        "name": "Encoder1",
+        "type": "encoder",
+        "mechanism": "key_interrupt",
+        "left_trigger": "k",
+        "right_trigger": "l",
+        "reg_link": "__Tremolo__osc_rate"
     }
 ]

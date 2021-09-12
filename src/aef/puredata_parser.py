@@ -10,27 +10,38 @@ class RoutingHook():
         self.routeId = routeId
         split = self.routeId.split('-')
         print("Split: ", split)
-        self.low = 0
+        self.min = 0
         self.increment = 0
-        self.end = 0
-        self.start = 0
+        self.max = 0
+        self.current = 0
         self.name = split[0]
         if (len(split) > 4):
             try:
-                self.low = float(split[1])
-                self.increment = float(split[2])
-                self.end = float(split[3])
-                self.start = float(split[4])
+                self.min = float(split[1])
+                self.increment = abs(float(split[2]))
+                self.max = float(split[3])
+                self.current = float(split[4])
             except:
                 print("ERROR, invalid routing range in file {}: ".format(file), routeId)
+
+    def up(self):
+        self.current = self.current + self.increment
+        if (self.current > self.max):
+            self.current = self.max
+    
+    def down(self):
+        self.current = self.current - self.increment
+        if (self.current < self.min):
+            self.current = self.min
+
     def print(self):
         print("Index: ", self.index)
         print("file: ", self.file)
         print("routeId: ", self.routeId)
-        print("start: ", self.start)
+        print("start: ", self.current)
         print("increment: ", self.increment)
-        print("end: ", self.end)
-        print("low: ", self.low)
+        print("max: ", self.max)
+        print("min: ", self.min)
 
 class PuredataFile():
     """Represents a single PD file

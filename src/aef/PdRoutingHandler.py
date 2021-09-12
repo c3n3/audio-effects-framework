@@ -10,7 +10,15 @@ class PdRoutingHandler():
     @staticmethod
     def consume(msg):
         for hook in PuredataFile.routingHooks:
-            pass
+            if (hook.name == msg.name):
+                if (msg.event == "LEFT"):
+                    hook.down()
+                elif (msg.event == "RIGHT"):
+                    hook.up()
+                PdHandler.pdAction(hook.routeId, hook.current, 2999)
+                break
+
+    @staticmethod
     def init():
         PdHandler.initHooks()
         PostalService.addConsumer([PdRoutingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, PdRoutingHandler)
