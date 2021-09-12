@@ -1,3 +1,4 @@
+from genericpath import isfile
 from aef.constants import Constants
 from aef.effects_handler import EffectsHandler
 from aef.global_commands import GlobalCommands
@@ -7,6 +8,7 @@ from aef.preset_handler import PresetHandler
 from aef.settings import GlobalSettings
 from aef.recorder import Recorder
 from aitpi.mirrored_json import MirroredJson
+from aef.PdRoutingHandler import PdRoutingHandler
 import aitpi
 import os
 
@@ -20,6 +22,12 @@ def ___copyTemps():
             GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
     os.system("cp {} {} >> {}".format(Constants.GLOBAL_PD, GlobalSettings.settings['temp_dir'],
     GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+    
+    # Only create one if we have not made it already, lest we overwite saved data
+    if (not os.path.isfile(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG)):
+        os.system("cp {} {} >> {}".format(Constants.DEFAULT_COMMAND_REGISTRY,
+        GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG,
+        GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
 
 def shutdown():
     if (os.system("jack_control status > {}".format(
@@ -68,13 +76,15 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         folderCommands[2]["input_type"] = "button"
 
         folderCommands.save()
-        aitpi.addRegistry(Constants.DEFAULT_COMMAND_REGISTRY, folderCommands.file)
-        
+        aitpi.addRegistry(
+            GlobalSettings.settings['temp_dir'] +
+            Constants.TEMP_COMMAND_REG, folderCommands.file)
         
         PdHandler.initPd()
         GlobalCommands.init()
         Recorder.init()
         EffectsHandler.init()
         PresetHandler.init()
+        PdRoutingHandler.init()
         _hasRun = True
 

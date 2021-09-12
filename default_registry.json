@@ -17,7 +17,13 @@
             "id": "1001"
         }
     },
-    "recordings": {},
+    "recordings": {
+        "Recording_0.wav": {
+            "id": 1003,
+            "input_type": "button",
+            "path": "/git/audio-effects-framework/src/aef/../../recordings/"
+        }
+    },
     "effects": {
         "Delay.pd": {
             "id": 1005,
@@ -51,7 +57,7 @@
         }
     },
     "presets": {
-        "test.pre": {
+        "21Guns.pre": {
             "id": 1002,
             "input_type": "button",
             "path": "/git/audio-effects-framework/src/aef/../../default_presets/"

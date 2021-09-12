@@ -41,6 +41,24 @@ class PdHandler():
         else:
             PdHandler.files.append(file)
         print("Now contains: ", PdHandler.files)
+
+    @staticmethod
+    def initHooks():
+        f = []
+        try:
+            for (dirpath, dirnames, filenames) in os.walk(PdHandler.dir):
+                f.extend(filenames)
+                break            
+            print("File names: ", f)
+        except:
+            print("No pd files available")
+        PuredataParser.parse(
+            f,
+            PdHandler.dir,
+            PdHandler.staticFiles,
+            PdHandler.staticPd,
+            None)
+        
     @staticmethod
     def parseFiles():
         """Parses all PD files

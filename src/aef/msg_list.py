@@ -30,3 +30,8 @@ class EffectsMessage(Message):
     """
     msgId = 1005
 
+class PdRoutingMessage(Message):
+    """ Handles effects
+    """
+    msgId = 1006
+

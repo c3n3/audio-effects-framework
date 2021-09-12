@@ -1,9 +1,43 @@
 import re
 import os
+from aef.settings import GlobalSettings
+class RoutingHook():
+    def __init__(self, index, file, routeId):
+        # The last in the list will have a ; we can get rid of it
+        routeId = routeId.replace(";", '')
+        self.index = index
+        self.file = file
+        self.routeId = routeId
+        split = self.routeId.split('-')
+        print("Split: ", split)
+        self.low = 0
+        self.increment = 0
+        self.end = 0
+        self.start = 0
+        self.name = split[0]
+        if (len(split) > 4):
+            try:
+                self.low = float(split[1])
+                self.increment = float(split[2])
+                self.end = float(split[3])
+                self.start = float(split[4])
+            except:
+                print("ERROR, invalid routing range in file {}: ".format(file), routeId)
+    def print(self):
+        print("Index: ", self.index)
+        print("file: ", self.file)
+        print("routeId: ", self.routeId)
+        print("start: ", self.start)
+        print("increment: ", self.increment)
+        print("end: ", self.end)
+        print("low: ", self.low)
+
 class PuredataFile():
     """Represents a single PD file
     """
-    def __init__(self, name):
+    routingHooks = []
+
+    def __init__(self, name, initHooks=False):
         """Init starts parsing PD. need to just read to figure out
 
         Args:
@@ -17,9 +51,14 @@ class PuredataFile():
         self.outputObject = -1
         self.startIndex = 0
         self.routingObjects = []
-        f = open(name, 'r')
-        string = f.read()
-        f.close
+        if (initHooks):
+            print("THIS IS INITING THE HOOKS")
+        try:
+            f = open(name, 'r')
+            string = f.read()
+            f.close
+        except:
+            return
         matches = re.findall("([^\\s](.|\\s)*?;)", string)
 
         obj = re.compile("#X")
@@ -34,6 +73,10 @@ class PuredataFile():
                 signals = re.match(routingObject, line)[2].split(" ")
                 for i in range(0, len(signals)):
                     signals[i] = "__" + self.stubName + "__" + signals[i]
+                    if (initHooks):
+                        # We save all routing hooks so we can generate commands later
+                        print("ADDING A NEW HOOK")
+                        PuredataFile.routingHooks.append(RoutingHook(index - 1, name, signals[i]))
                 #Store all the routing objects
                 self.routingObjects.append(index - 1)
                 line = re.sub(routingObject, "\\1 {}".format(" ".join(signals)), line)
@@ -94,13 +137,12 @@ class PuredataParser():
             dir2 (str): global dir
             outPath (str): file to output
         """
-        print("INFO ", fileNames, dir1, globalFiles, dir2, outPath)
         files = []
         index = 0
         result = "#N canvas 2521 143 995 666 12;"
         for file in fileNames:
             result += "\n"
-            files.append(PuredataFile(dir1 + file))
+            files.append(PuredataFile(dir1 + file, outPath == None))
             index = files[len(files) - 1].offset(index)
             result += files[len(files) - 1].objects
         for file in globalFiles:
@@ -131,9 +173,10 @@ class PuredataParser():
             if (index == 0):
                 continue
             result += "#X connect {} 0 {} 0;\n".format(files[index - 1].outputObject, files[index].inputObject)
-        f = open(outPath, "w")
-        f.write(result)
-        f.close()
+        if (outPath != None):
+            f = open(outPath, "w")
+            f.write(result)
+            f.close()
 
 
 if (__name__ == "__main__"):

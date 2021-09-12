@@ -1,16 +1,15 @@
-from genericpath import isfile
 import os
 from time import sleep
 from aitpi.postal_service import PostalService
 from aef.msg_list import *
 from aef.pd_handler import PdHandler
+from aef.settings import GlobalSettings
 
 class Recorder():
     """Handles recording files
     """
-    prefix = "__playback__"
     state = "IDLE"
-    recordingFolder = "../recordings/"
+    recordingFolder = None
     recordingExt = ".wav"
     recordingCount = 0
     inited = False
@@ -20,7 +19,7 @@ class Recorder():
     def save():
         """Saves a new recording from the looper
         """
-        if (os.path.isfile('../Global/loop.wav')):
+        if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
             # Save loop file
             while (True):
                 name = 'Recording_{}{}'.format(Recorder.recordingCount, Recorder.recordingExt)
@@ -29,7 +28,7 @@ class Recorder():
                 if (os.path.isfile(file) == False):
                     break
                 
-            os.system('cp ../Global/loop.wav {}'.format(file))
+            os.system('cp {}loop.wav {}'.format(GlobalSettings.settings['temp_dir'], file))
             PostalService.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 
     @staticmethod
@@ -45,7 +44,7 @@ class Recorder():
         elif (os.path.isfile(file)):
             Recorder.lastPlayed = file
             copyName = "playback.wav"
-            copyFile = "../Global/%s" % copyName
+            copyFile = "%s%s" % (GlobalSettings.settings['temp_dir'], copyName)
             os.system("cp {} {}".format(file, copyFile))
             sleep(0.1)
             PdHandler.pdAction("global_playback", "open {}, global_playback 1".format(copyName), 3000) # start playback
@@ -75,6 +74,7 @@ class Recorder():
 
     @staticmethod
     def init():
+        Recorder.recordingFolder = GlobalSettings.settings['recordings_dir']
         if (Recorder.inited == False):
             Recorder.inited = True
             PostalService.addConsumer([RecordingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, Recorder)

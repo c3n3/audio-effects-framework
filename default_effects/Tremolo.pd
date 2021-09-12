@@ -1,4 +1,4 @@
-#N canvas 1920 61 1920 983 10;
+#N canvas 298 97 1440 983 10;
 #X text 142 19 start;
 #X obj 242 197 clip~ -1 1;
 #X obj 245 63 osc~ 8.988;
@@ -8,6 +8,8 @@
 #X obj 90 119 *~ 1.0001;
 #X obj 138 380 *~ 1.0002;
 #X obj 140 333 *~;
+#X floatatom 330 39 5 0 0 0 - - -;
+#X obj 339 13 route osc_rate-5-1-20-9;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
@@ -15,3 +17,5 @@
 #X connect 5 0 8 1;
 #X connect 6 0 8 0;
 #X connect 8 0 7 0;
+#X connect 9 0 2 1;
+#X connect 10 0 9 0;
