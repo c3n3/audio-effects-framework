@@ -1,5 +1,6 @@
 import os
 from time import sleep
+from aef.constants import Constants
 from aef.settings import GlobalSettings
 from aef.puredata_parser import PuredataParser
 from aef.jack_handler import JackHandler
@@ -12,7 +13,7 @@ class PdHandler():
     parser = PuredataParser()
 
     dir = None
-    staticPd = './aef/Default/'
+    staticPd = Constants.DEFAULT_PD_DIR
 
     files = []
     staticFiles = []
@@ -39,7 +40,7 @@ class PdHandler():
             PdHandler.files.remove(file)
         else:
             PdHandler.files.append(file)
-
+        print("Now contains: ", PdHandler.files)
     @staticmethod
     def parseFiles():
         """Parses all PD files
@@ -49,7 +50,7 @@ class PdHandler():
             PdHandler.dir,
             PdHandler.staticFiles,
             PdHandler.staticPd,
-            GlobalSettings.settings['result_pd'].value)
+            GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD)
         PdHandler.killPuredata()
         print("Running pd")
         PdHandler.runPuredata()
@@ -91,26 +92,33 @@ class PdHandler():
         pids = os.popen('pidof pd').read().split(" ")
         for pid in pids:
             if (pid != JackHandler.globalPdPid):
-                os.system("sh {}/jack_disconnect_all.sh".format(GlobalSettings.settings['scripts_dir'].value))
-                os.system('kill {}'.format(pid))
-                os.system('wait {}'.format(pid))
+                os.system("sh {}/jack_disconnect_all.sh >> {}".format(
+                    Constants.SCRIPTS_DIR,
+                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+                os.system('kill {} >> {}'.format(
+                    pid,
+                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+                os.system('wait {} >> {}'.format(
+                    pid,
+                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
                 sleep(0.2)
 
     @staticmethod
     def cleanUpPuredata():
         """Cleans up all instances of puredata.
         """
-        os.system("killall pd")
+        os.system("killall pd >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
 
     @staticmethod
     def runPuredata():
         """Runs pd
         """
         global settings
-        os.system("pd {} -jack -nojackconnect -jackname user_pd {} &"
+        os.system("pd {} -jack -nojackconnect -jackname user_pd {} >> {}&"
             .format(
-                "-nogui" if GlobalSettings.settings['debug_pd'].value == 'False' else "",
-                GlobalSettings.settings['result_pd'].value
+                "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
+                GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD,
+                GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
                 ))
         JackHandler.jackConnectAll()
 
@@ -123,14 +131,14 @@ class PdHandler():
             action (str): the action string
             port (int, optional): The port to send it over. Defaults to 3000.
         """
-        command = "echo {} {} \; | pdsend {}".format(prefix, action, port)
+        command = "echo {} {} \; | pdsend {} >> {}".format(prefix, action, port,
+            GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)
         print("PD command: ", command)
         os.system(command)
     
     @staticmethod
-    def initPd(effectsDir):
-        PdHandler.staticPd = "../Default/"
+    def initPd():
         JackHandler.init()
-        PdHandler.dir = effectsDir
+        PdHandler.dir = GlobalSettings.settings['effects_dir']
         PdHandler.parseGlobals()
         PdHandler.parseFiles()

@@ -1,0 +1,11 @@
+#N canvas 1123 368 450 300 10;
+#X text 139 29 start;
+#X obj 135 85 *~ 1.0001;
+#X obj 164 267 *~ 1.0002;
+#X obj 134 187 clip~ -0.1 0.1;
+#X obj 138 130 *~ 30;
+#X obj 161 227 *~ 0.5;
+#X connect 1 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;

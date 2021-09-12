@@ -25,7 +25,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "4",
-        "reg_link": ""
+        "reg_link": "21Guns.pre"
     },
     {
         "name": "Encoder0",

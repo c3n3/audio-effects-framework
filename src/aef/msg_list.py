@@ -5,6 +5,7 @@ class InputPuredataMessage(Message):
     """
     msgId = 1001
 
+
 class PresetMessage(Message):
     """Handles running presets
     """
@@ -23,3 +24,9 @@ class OutputMessage(Message):
     def __init__(self, message, type):
         self.message = message
         self.type = type
+
+class EffectsMessage(Message):
+    """ Handles effects
+    """
+    msgId = 1005
+

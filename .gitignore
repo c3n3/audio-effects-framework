@@ -7,3 +7,4 @@ __main__.py
 .vscode
 master.pd
 *.wav
+foldered_commands.temp.json

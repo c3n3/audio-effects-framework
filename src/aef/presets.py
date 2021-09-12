@@ -45,19 +45,6 @@ class Presets(Node):
         self.child.left = cur
         cur.right = self.child
 
-    @staticmethod
-    def consume(msg):
-        """Handles actually running the preset commands that are sent through the CentralRouter
-
-        Args:
-            msg (Message): Message containing the preset to run
-        """
-        f = open(Presets.presetsFolder + msg.data, "r")
-        lines = f.readlines()
-        PdHandler.files = []
-        for i in range(1, len(lines)): # skip title of preset
-            PdHandler.toggleFile(lines[i].replace('\n', ''))
-        PdHandler.parseFiles()
 if (not Presets.inited):
     CentralRouter.addConsumer([PresetMessage.msgId], CentralRouter.GLOBAL_SUBSCRIPTION, Presets)
     Presets.inited = True

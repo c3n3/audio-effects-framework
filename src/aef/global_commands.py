@@ -1,10 +1,13 @@
 from genericpath import isfile
 import os
 from aitpi.postal_service import PostalService
+from aef.constants import Constants
 from aef.msg_list import InputPuredataMessage
 from aef.msg_list import OutputMessage
 from aef.pd_handler import PdHandler
 from time import sleep
+
+from aef.settings import GlobalSettings
 
 class GlobalCommands():
     """Handles sending all global commands
@@ -66,9 +69,12 @@ class GlobalCommands():
     @staticmethod
     def playLoop():
         # TODO: Make the loop.wav location a setting 
-        if (os.path.isfile('../Global/loop.wav')):
+        if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
             PdHandler.pdAction("global_loop", "stop", 3000)
-            os.system('cp ../Global/loop.wav ../Global/out.wav') # rename file
+            os.system('cp {}loop.wav {}out.wav >> {}'.format(
+                GlobalSettings.settings['temp_dir'],
+                GlobalSettings.settings['temp_dir'],
+                GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
             sleep(0.2)
             PdHandler.pdAction("global_loop", "open out.wav, global_loop 1", 3000) # start playback
             GlobalCommands.isPlaying = True
@@ -108,6 +114,4 @@ class GlobalCommands():
 
     @staticmethod
     def init():
-        if (not os.path.isfile('../recordings/')):
-            os.system("mkdir ../recordings/")
         PostalService.addConsumer([InputPuredataMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, GlobalCommands)

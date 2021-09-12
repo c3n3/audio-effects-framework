@@ -29,7 +29,10 @@ class AllSettings():
         Returns:
             Setting: the setting
         """
-        return self.get(name)
+        res = self.get(name)
+        if (res == None):
+            return None
+        return res.value
 
     def __setitem__(self, name, val):
         """Used to set a setting
@@ -60,6 +63,8 @@ class AllSettings():
         Args:
             args (str): a string of the command line arguments
         """
+        if (args == None):
+            return
         for i in range(0, len(args)):
             if (args[i].find("-") != -1 and self[args[i].replace('-', '')] != None): # makes sure the args are valid settings
                 if (i < len(args) - 1): # if there is another argument for the setting
@@ -97,31 +102,25 @@ class GlobalSettings():
     """
     settings = AllSettings([
                 Setting('debug_pd', 'False', ['True', 'False']),
-                Setting('result_pd', '../master.pd', []),
-                Setting('global_pd', '../Global/Global.pd', []),
-                Setting('scripts_dir', '../Scripts/', []),
-                Setting('default_pd', '../Default/Default.pd', []),
+                Setting('recordings_dir', '', []),
+                Setting('presets_dir', '', []),
+                Setting('effects_dir', '', []),
+                Setting('temp_dir', './temp/', []),
             ])
 
     @staticmethod
-    def init():
+    def init(args, effects, recordings, presets):
         """ Inits settings to take arguments
 
         Args:
             args (string): argv
         """
         import os
-        dirname = os.path.dirname(__file__)
-        globalPd = os.path.join(dirname, '../../Global/Global.pd')
-        reset_pd = os.path.join(dirname, '../../master.pd')
-        defaultPd = os.path.join(dirname, '../../Default')
-        scripts = os.path.join(dirname, '../../Scripts')
-        GlobalSettings.settings['result_pd'] = reset_pd
-        GlobalSettings.settings['global_pd'] = globalPd
-        GlobalSettings.settings['default_pd'] = defaultPd
-        GlobalSettings.settings['scripts_dir'] = scripts
-
-        GlobalSettings.settings.takeArgs(sys.argv)
+        # GlobalSettings.settings['result_pd'] = reset_pd
+        GlobalSettings.settings['recordings_dir'] = recordings
+        GlobalSettings.settings['effects_dir'] = effects
+        GlobalSettings.settings['presets_dir'] = presets
+        GlobalSettings.settings.takeArgs(args)
 
     def __init__(self) -> None:
         raise "Static class"
