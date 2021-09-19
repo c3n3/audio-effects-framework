@@ -1,3 +1,6 @@
+from aef.constants import Constants
+name = Constants.DEFAULT_COMMAND_REGISTRY
+file="""
 {
     "sound recording": {
         "loop": {
@@ -64,3 +67,4 @@
         }
     }
 }
+"""

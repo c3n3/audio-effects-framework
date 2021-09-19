@@ -1,11 +1,12 @@
 from genericpath import isfile
 from aef.constants import Constants
+from aef.default_files import DefaultFiles
 from aef.effects_handler import EffectsHandler
 from aef.global_commands import GlobalCommands
 from aef.msg_list import EffectsMessage, PresetMessage, RecordingMessage
 from aef.pd_handler import PdHandler
 from aef.preset_handler import PresetHandler
-from aef.settings import GlobalSettings
+from aef.settings import GS_temp, GlobalSettings
 from aef.recorder import Recorder
 from aitpi.mirrored_json import MirroredJson
 from aef.PdRoutingHandler import PdRoutingHandler
@@ -16,17 +17,11 @@ _hasRun = False
 
 
 # Here we must copy over the global pd folder
-def ___copyTemps():
-    if (not os.path.isfile(GlobalSettings.settings['temp_dir'])):
-        os.system("mkdir {} >> {}".format(GlobalSettings.settings['temp_dir'],
-            GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-    os.system("cp {} {} >> {}".format(Constants.GLOBAL_PD, GlobalSettings.settings['temp_dir'],
-    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-    
+def ___copyDefaults():
     # Only create one if we have not made it already, lest we overwite saved data
     if (not os.path.isfile(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG)):
-        os.system("cp {} {} >> {}".format(Constants.DEFAULT_COMMAND_REGISTRY,
-        GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG,
+        os.system("cp {} {} >> {}".format(GS_temp(Constants.DEFAULT_COMMAND_REGISTRY),
+        GS_temp(Constants.TEMP_COMMAND_REG),
         GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
 
 def shutdown():
@@ -43,7 +38,9 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
     global _hasRun
     if (not _hasRun):
         GlobalSettings.init(args, effectsFolder, recordingsFolder, presetsFolder)
-        ___copyTemps()
+        os.makedirs(GlobalSettings.settings['temp_dir'], exist_ok=True)
+        DefaultFiles.init()
+        ___copyDefaults()
 
         folderCommands = MirroredJson(
             os.path.join(
@@ -79,7 +76,6 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         aitpi.addRegistry(
             GlobalSettings.settings['temp_dir'] +
             Constants.TEMP_COMMAND_REG, folderCommands.file)
-        
         PdHandler.initPd()
         GlobalCommands.init()
         Recorder.init()

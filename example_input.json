@@ -4,28 +4,28 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "1",
-        "reg_link": "loop"
+        "reg_link": ""
     },
     {
         "name": "Button1",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "2",
-        "reg_link": "record"
+        "reg_link": ""
     },
     {
         "name": "Button2",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "3",
-        "reg_link": "save"
+        "reg_link": ""
     },
     {
         "name": "Button3",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "4",
-        "reg_link": "Recording_0.wav"
+        "reg_link": ""
     },
     {
         "name": "Button4",
@@ -40,7 +40,7 @@
         "mechanism": "key_interrupt",
         "left_trigger": "o",
         "right_trigger": "p",
-        "reg_link": "volume"
+        "reg_link": ""
     },
     {
         "name": "Encoder1",

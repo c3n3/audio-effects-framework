@@ -1,6 +1,6 @@
 import os
 from aef.constants import Constants
-from aef.settings import GlobalSettings
+from aef.settings import GS_temp, GlobalSettings
 class JackHandler():
     """Handles all things with jack
     """
@@ -19,8 +19,8 @@ class JackHandler():
             pass
         command = ("pd {} -jack -nojackconnect -jackname global_pd {} >> {} &"
             .format("-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-                    GlobalSettings.settings['temp_dir'] + "/Global.pd",
-                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+                    GS_temp(Constants.GLOBAL_PD),
+                    GS_temp(Constants.SHELL_LOG_FILE)))
         result = os.system(command)
         JackHandler.globalPdPid = os.popen("pidof pd").read()
 

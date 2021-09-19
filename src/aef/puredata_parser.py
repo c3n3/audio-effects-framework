@@ -62,8 +62,6 @@ class PuredataFile():
         self.outputObject = -1
         self.startIndex = 0
         self.routingObjects = []
-        if (initHooks):
-            print("THIS IS INITING THE HOOKS")
         try:
             f = open(name, 'r')
             string = f.read()
@@ -86,7 +84,6 @@ class PuredataFile():
                     signals[i] = "__" + self.stubName + "__" + signals[i]
                     if (initHooks):
                         # We save all routing hooks so we can generate commands later
-                        print("ADDING A NEW HOOK")
                         PuredataFile.routingHooks.append(RoutingHook(index - 1, name, signals[i]))
                 #Store all the routing objects
                 self.routingObjects.append(index - 1)

@@ -2,8 +2,10 @@ import os
 from time import sleep
 from aef.constants import Constants
 from aef.settings import GlobalSettings
+from aef.settings import GS_temp
 from aef.puredata_parser import PuredataParser
 from aef.jack_handler import JackHandler
+from aef.logger import Logger
 
 class PdHandler():
     """Handles all pd functions
@@ -13,7 +15,7 @@ class PdHandler():
     parser = PuredataParser()
 
     dir = None
-    staticPd = Constants.DEFAULT_PD_DIR
+    staticPd = GS_temp(Constants.DEFAULT_PD_DIR)
 
     files = []
     staticFiles = []
@@ -49,9 +51,8 @@ class PdHandler():
             for (dirpath, dirnames, filenames) in os.walk(PdHandler.dir):
                 f.extend(filenames)
                 break            
-            print("File names: ", f)
         except:
-            print("No pd files available")
+            Logger.log("no pd files available", Logger.WARNING)
         PuredataParser.parse(
             f,
             PdHandler.dir,
@@ -70,7 +71,6 @@ class PdHandler():
             PdHandler.staticPd,
             GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD)
         PdHandler.killPuredata()
-        print("Running pd")
         PdHandler.runPuredata()
 
     @staticmethod
@@ -79,7 +79,6 @@ class PdHandler():
         """
         for root, dirs, files in os.walk(PdHandler.staticPd, topdown=False):
             for name in files:
-                print("name:", name)
                 if ('.pd' in name):
                     PdHandler.staticFiles.append(name)
 

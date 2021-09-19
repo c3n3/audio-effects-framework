@@ -1,24 +1,37 @@
 class Logger():
-    """The logger class. Used to log any usefull messages.
+    """The logger class. Used to log any useful messages.
        Use this instead of print in ALL cases
     """
-    def __init__(self):
-        """NO init for you
-        """
-        raise "Static class"
+
+    log_location = 'PRINT'
+
+    PRINT = "PRINT"
+
+    NOTE = "NOTE"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    DANGER = "DANGER"
+
+    level_to_log = "NOTE"
 
     @staticmethod
-    def log(msg, SEVERITY="NOTE"):
-        """Simple logging of message
+    def log(msg, severity = "NOTE"):
 
-        Args:
-            msg (str): Message to log
-        """
-        print(msg)
+        if (Logger.log_location == Logger.PRINT) and (Logger.level_to_log == Logger.NOTE):
+            print("AEF::", severity,': ', msg)
 
-    @staticmethod
-    def notify(msg):
-        """TODO: Notify? Should remove and make log of a severity argument
-        """
-        if (settings['instance'] != 'pi'):
-            print(msg)
+        elif (Logger.log_location == Logger.PRINT) and (Logger.level_to_log == Logger.WARNING) and ((severity == Logger.WARNING) or (severity == Logger.ERROR) or (severity == Logger.DANGER)):
+            print("AEF::", severity, ': ', msg)
+
+        elif (Logger.log_location == Logger.PRINT) and (Logger.level_to_log == Logger.ERROR) and ((severity == Logger.ERROR) or (severity == Logger.DANGER)):
+            print("AEF::", severity, ': ', msg)
+
+        elif (Logger.log_location == Logger.PRINT) and (Logger.level_to_log == Logger.DANGER) and (severity == Logger.DANGER):
+            print("AEF::", severity, ': ', msg)
+
+        elif Logger.log_location == Logger.PRINT:
+            pass
+        else: 
+            Logger.log_location = open(Logger.log_location, 'w')    
+            print("AEF::", severity,': ', msg, file = Logger.log_location)  
+            

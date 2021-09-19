@@ -1,3 +1,6 @@
+from aef.constants import Constants
+name = Constants.GLOBAL_PD
+file = """
 #N canvas -28 121 1124 625 12;
 #X text 326 104 looper;
 #X obj 461 186 readsf~;
@@ -40,3 +43,4 @@
 #X connect 15 0 13 0;
 #X connect 16 0 2 0;
 #X connect 16 0 7 0;
+"""

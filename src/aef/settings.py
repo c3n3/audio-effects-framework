@@ -117,11 +117,13 @@ class GlobalSettings():
         """
         import os
         # GlobalSettings.settings['result_pd'] = reset_pd
-        GlobalSettings.settings['recordings_dir'] = recordings
         GlobalSettings.settings['effects_dir'] = effects
         GlobalSettings.settings['presets_dir'] = presets
+        GlobalSettings.settings['recordings_dir'] = recordings
         GlobalSettings.settings.takeArgs(args)
 
     def __init__(self) -> None:
         raise "Static class"
 
+def GS_temp(name):
+    return GlobalSettings.settings['temp_dir'] + name
