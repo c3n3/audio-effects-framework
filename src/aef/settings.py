@@ -103,6 +103,7 @@ class GlobalSettings():
     settings = AllSettings([
                 Setting('debug_pd', 'False', ['True', 'False']),
                 Setting('recordings_dir', '', []),
+                Setting('scale_volume', '5', []),
                 Setting('presets_dir', '', []),
                 Setting('effects_dir', '', []),
                 Setting('temp_dir', './temp/', []),

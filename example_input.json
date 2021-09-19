@@ -18,7 +18,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "3",
-        "reg_link": ""
+        "reg_link": "8bit.pd"
     },
     {
         "name": "Button3",
@@ -48,6 +48,6 @@
         "mechanism": "key_interrupt",
         "left_trigger": "k",
         "right_trigger": "l",
-        "reg_link": "__Tremolo__osc_rate"
+        "reg_link": "__8bit__distortion"
     }
 ]
