@@ -9,7 +9,6 @@ class DefaultFiles():
     @staticmethod
     def init():
         for file in files.files:
-            print("outputing ", file.name)
             try:
                 os.makedirs(os.path.dirname(GS_temp(file.name)), exist_ok=True)
                 f = open(GS_temp(file.name), "w")

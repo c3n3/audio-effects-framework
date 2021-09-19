@@ -45,8 +45,8 @@ class GlobalCommands():
         if (leftOrRight == "LEFT"):
             GlobalCommands._volume = GlobalCommands._volume - 5 if GlobalCommands._volume != 0 else 0
         elif (leftOrRight == "RIGHT"):
-            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 100 else 100
-        PdHandler.pdAction("__Default__volume", GlobalCommands._volume / 100, 2999)
+            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 200 else 200
+        PdHandler.pdAction("__default__volume", GlobalCommands._volume / 100, 2999)
 
     @staticmethod
     def playback():
@@ -103,13 +103,10 @@ class GlobalCommands():
         if (msg.event == "DOWN"):
             return
         if (msg.name == 'record'):
-            print("Recording")
             GlobalCommands.record()
         elif (msg.name == 'loop'):
-            print("Looping")
             GlobalCommands.playback()
         elif (msg.name == 'volume'):
-            print("Changing volume")
             GlobalCommands.volume(msg.event)
 
     @staticmethod

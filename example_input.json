@@ -40,7 +40,7 @@
         "mechanism": "key_interrupt",
         "left_trigger": "o",
         "right_trigger": "p",
-        "reg_link": ""
+        "reg_link": "volume"
     },
     {
         "name": "Encoder1",

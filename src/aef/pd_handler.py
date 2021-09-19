@@ -110,7 +110,7 @@ class PdHandler():
         for pid in pids:
             if (pid != JackHandler.globalPdPid):
                 os.system("sh {}/jack_disconnect_all.sh >> {}".format(
-                    Constants.SCRIPTS_DIR,
+                    GS_temp(Constants.SCRIPTS_DIR),
                     GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
                 os.system('kill {} >> {}'.format(
                     pid,
@@ -150,7 +150,6 @@ class PdHandler():
         """
         command = "echo {} {} \; | pdsend {} >> {}".format(prefix, action, port,
             GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)
-        print("PD command: ", command)
         os.system(command)
     
     @staticmethod

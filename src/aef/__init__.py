@@ -19,7 +19,7 @@ _hasRun = False
 # Here we must copy over the global pd folder
 def ___copyDefaults():
     # Only create one if we have not made it already, lest we overwite saved data
-    if (not os.path.isfile(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG)):
+    if (not os.path.isfile(GS_temp(Constants.TEMP_COMMAND_REG))):
         os.system("cp {} {} >> {}".format(GS_temp(Constants.DEFAULT_COMMAND_REGISTRY),
         GS_temp(Constants.TEMP_COMMAND_REG),
         GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))

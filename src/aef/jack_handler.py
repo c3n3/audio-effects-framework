@@ -30,14 +30,14 @@ class JackHandler():
         """Makes the connections from system to user pd to global pd to output
            Do not run if user_pd is not started. Will potentially lead to deadlock
         """
-        os.system("sh {}/jack_connect_all.sh >> {}".format(Constants.SCRIPTS_DIR,
-            GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+        os.system("sh {}/jack_connect_all.sh >> {}".format(GS_temp(Constants.SCRIPTS_DIR),
+            GS_temp(Constants.SHELL_LOG_FILE)))
 
     @staticmethod
     def jackStop():
         """Stops jack
         """
-        os.system("killall qjackctl >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-        os.system("jack_control stop >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+        os.system("killall qjackctl >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
+        os.system("jack_control stop >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
 
         
