@@ -33,6 +33,8 @@ def shutdown():
         JackHandler.jackStop()
         from aef.pd_handler import PdHandler
         PdHandler.cleanUpPuredata()
+        global _hasRun
+        _hasRun = False
 
 def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
     global _hasRun
