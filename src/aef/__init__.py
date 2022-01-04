@@ -3,7 +3,7 @@ from aef.constants import Constants
 from aef.default_files import DefaultFiles
 from aef.effects_handler import EffectsHandler
 from aef.global_commands import GlobalCommands
-from aef.msg_list import EffectsMessage, PresetMessage, RecordingMessage
+from aef.msg_list import EffectsMessage, OutputMessage, PresetMessage, RecordingMessage
 from aef.pd_handler import PdHandler
 from aef.preset_handler import PresetHandler
 from aef.settings import GS_temp, GlobalSettings
@@ -13,8 +13,9 @@ from aef.PdRoutingHandler import PdRoutingHandler
 import aitpi
 import os
 
-_hasRun = False
+from aitpi.postal_service import PostalService
 
+_hasRun = False
 
 # Here we must copy over the global pd folder
 def ___copyDefaults():
@@ -84,5 +85,14 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         EffectsHandler.init()
         PresetHandler.init()
         PdRoutingHandler.init()
-        _hasRun = True
 
+        # Prevent AITPI from spaming prints
+        class DummyWatcher():
+            def consume(self, msg):
+                pass
+        aitpi.PostalService.addConsumer(
+            [OutputMessage.msgId],
+            PostalService.GLOBAL_SUBSCRIPTION,
+            DummyWatcher())
+
+        _hasRun = True

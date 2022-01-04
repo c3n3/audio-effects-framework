@@ -5,7 +5,6 @@ class InputPuredataMessage(Message):
     """
     msgId = 1001
 
-
 class PresetMessage(Message):
     """Handles running presets
     """
