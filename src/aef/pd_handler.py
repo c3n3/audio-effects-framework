@@ -112,7 +112,7 @@ class PdHandler():
                 os.system("sh {}/jack_disconnect_all.sh >> {}".format(
                     GS_temp(Constants.SCRIPTS_DIR),
                     GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-                os.system('kill {} >> {}'.format(
+                os.system('kill -9 {} >> {}'.format(
                     pid,
                     GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
                 os.system('wait {} >> {}'.format(

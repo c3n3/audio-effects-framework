@@ -12,7 +12,8 @@ class JackHandler():
         """
         global settings
         os.system("killall pd >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-        os.system("qjackctl --start --preset=guitar-module &")
+        os.system("sh {}/jack_start.sh >> {}".format(GS_temp(Constants.SCRIPTS_DIR),
+            GS_temp(Constants.SHELL_LOG_FILE)))
         while (os.system("jack_control status >> {}".format(
             GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
         )) != 0):
@@ -37,7 +38,7 @@ class JackHandler():
     def jackStop():
         """Stops jack
         """
-        os.system("killall qjackctl >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
+        # os.system("killall qjackctl >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
         os.system("jack_control stop >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
 
         

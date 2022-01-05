@@ -1,138 +1,76 @@
 [
     {
-        "name": "Button0",
+        "name": "b1",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "1",
+        "mechanism": "rpi_gpio",
+        "trigger": "12",
         "reg_link": "Delay.pd"
     },
     {
-        "name": "ButtonR",
+        "name": "b2",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "r",
-        "reg_link": "record"
+        "mechanism": "rpi_gpio",
+        "trigger": "15",
+        "reg_link": "Delay.pd"
     },
     {
-        "name": "ButtonL",
+        "name": "b3",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "l",
-        "reg_link": "loop"
+        "mechanism": "rpi_gpio",
+        "trigger": "16",
+        "reg_link": "Delay.pd"
     },
     {
-        "name": "Button1",
+        "name": "b4",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "2",
-        "reg_link": "Viola.pd"
+        "mechanism": "rpi_gpio",
+        "trigger": "13",
+        "reg_link": "Delay.pd"
     },
     {
-        "name": "Button2",
+        "name": "b5",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "3",
-        "reg_link": "8bit.pd"
+        "mechanism": "rpi_gpio",
+        "trigger": "14",
+        "reg_link": "Delay.pd"
     },
     {
-        "name": "Button3",
+        "name": "b6",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "4",
-        "reg_link": "Chamber.pd"
-    },
-    {
-        "name": "Button4",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "5",
+        "mechanism": "rpi_gpio",
+        "trigger": "11",
         "reg_link": "Tremolo.pd"
     },
     {
-        "name": "Button5",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "6",
-        "reg_link": "Distortion.pd"
-    },
-    {
-        "name": "Button6",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "7",
-        "reg_link": "Fuzz.pd"
-    },
-    {
-        "name": "Button7",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "8",
-        "reg_link": "Delay.pd"
-    },
-    {
-        "name": "Encoder0",
+        "name": "e1",
         "type": "encoder",
-        "mechanism": "key_interrupt",
-        "left_trigger": "o",
-        "right_trigger": "p",
-        "reg_link": "volume"
-    },
-    {
-        "name": "Encoder1",
-        "type": "encoder",
-        "mechanism": "key_interrupt",
-        "left_trigger": ";",
-        "right_trigger": "'",
-        "reg_link": "__8bit__distortion"
-    },
-    {
-        "name": "EncoderTremolo",
-        "type": "encoder",
-        "mechanism": "key_interrupt",
-        "left_trigger": "n",
-        "right_trigger": "m",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "9",
+        "right_trigger": "10",
         "reg_link": "__Tremolo__osc_rate"
     },
     {
-        "name": "Button10",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "b",
-        "reg_link": "Synth.pd"
+        "name": "e2",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "4",
+        "right_trigger": "5",
+        "reg_link": "__Tremolo__osc_rate"
     },
     {
-        "name": "Button11",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "c",
-        "reg_link": "Clean.pre"
+        "name": "e3",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "6",
+        "right_trigger": "7",
+        "reg_link": "__Tremolo__osc_rate"
     },
     {
-        "name": "Button12",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "g",
-        "reg_link": "21Guns.pre"
-    },
-    {
-        "name": "Button13",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "s",
-        "reg_link": "save"
-    },
-    {
-        "name": "Button15",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "z",
-        "reg_link": "Bad.pre"
-    },
-    {
-        "name": "Button14",
-        "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "q",
-        "reg_link": "Recording_0.wav"
+        "name": "e4",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "17",
+        "right_trigger": "23",
+        "reg_link": "__Tremolo__osc_rate"
     }
 ]
