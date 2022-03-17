@@ -43,7 +43,6 @@ class JackHandler():
         """
         if (GlobalSettings.settings['use_qjack'] == 'True'):
             os.system("killall qjackctl >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
-        else:
-            os.system("jack_control stop >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
+        os.system("jack_control stop >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
 
-        
+
