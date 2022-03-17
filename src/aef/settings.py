@@ -109,6 +109,7 @@ class GlobalSettings():
                 Setting('temp_dir', './temp/', []),
                 Setting('use_qjack', 'True', ['True', 'False']),
                 Setting('jack_start_num', '0', ['0', '1']),
+                Setting('alsa_device', 'sndrpihifiberry', []), # Device,0
             ])
 
     @staticmethod
