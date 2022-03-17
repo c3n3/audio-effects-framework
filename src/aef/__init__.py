@@ -96,3 +96,7 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
             DummyWatcher())
 
         _hasRun = True
+
+
+def changeLink(inputName, newRegLink):
+    aitpi.changeInputRegLink(inputName, newRegLink)
