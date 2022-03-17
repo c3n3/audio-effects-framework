@@ -1,6 +1,10 @@
 from aef.constants import Constants
+from aef.settings import GlobalSettings
+
 name = "{}jack_disconnect_all.sh".format(Constants.SCRIPTS_DIR)
+startingNum = int(GlobalSettings.settings["jack_start_num"])
+
 file = """
-jack_disconnect user_pd:output0 global_pd:input_1
-jack_disconnect user_pd:output1 global_pd:input_2
-"""
+jack_disconnect user_pd:output0 global_pd:input_{}
+jack_disconnect user_pd:output1 global_pd:input_{}
+""".format(startingNum, startingNum + 1)
