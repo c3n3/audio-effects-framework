@@ -133,6 +133,6 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "q",
-        "reg_link": "Recording_0.wav"
+        "reg_link": ""
     }
 ]
