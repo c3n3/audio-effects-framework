@@ -6,7 +6,7 @@
 # Taken from: https://people.csail.mit.edu/albert/bluez-intro/c212.html
 
 from commands import *
-import aef
+# import aef
 from time import sleep
 import bluetooth
 
@@ -60,12 +60,12 @@ class BlueToothHandler():
 
     def executeCommand(self, val):
         if (val["command"] == GET_COMMANDS_COMMAND):
-            self.cli.send(createReturnCommands(aef.getCommands()))
+            self.cli.send(createReturnCommands(["Test", "Test2"]))
         if (val["command"] == CHANGE_COMMAND):
             print("Changing", val["key"], "to", val["value"])
             #aef.changeLink(val["key"], val["value"])
 
-    def __del__(self):
+    def close(self):
         self.cli.close()
         self.server_sock.close()
 
@@ -75,6 +75,6 @@ while (True):
         while (True):
             blue.listen()
     except:
-        pass
+        blue.close()
     print("Dropped connection, waiting...")
     sleep(5)
