@@ -25,6 +25,9 @@ def ___copyDefaults():
         GS_temp(Constants.TEMP_COMMAND_REG),
         GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
 
+def getCommands():
+    return aitpi.getCommands()
+
 def shutdown():
     if (os.system("jack_control status > {}".format(
         GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)) == 0
@@ -100,3 +103,4 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
 
 def changeLink(inputName, newRegLink):
     aitpi.changeInputRegLink(inputName, newRegLink)
+

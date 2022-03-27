@@ -7,54 +7,34 @@
 from time import sleep
 import bluetooth
 from commands import *
-def receiveMessages():
-    server_sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
-    port = 1
-    server_sock.bind(("",port))
-    server_sock.listen(1)
+class BluetoothServer():
+    devices = {}
 
-    client_sock,address = server_sock.accept()
-    print ("Accepted connection from " + str(address))
+    def __init__(self):
+        self.commands = {}
+        self.port = 1
+        self.sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
-    data = client_sock.recv(1024)
-    print ("received [%s]" % data)
+    def connect(self, addr):
+        self.sock.connect((addr, self.port))
 
-    client_sock.close()
-    server_sock.close()
-  
-def sendMessageTo(targetBluetoothMacAddress):
-    port = 1
-    sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-    sock.connect((targetBluetoothMacAddress, port))
-    sock.send("hello!!")
-    sock.close()
-  
-def lookUpNearbyBluetoothDevices():
-    nearby_devices = bluetooth.discover_devices()
-    l = {}
-    for bdaddr in nearby_devices:
-        name = str(bluetooth.lookup_name( bdaddr ))
-        print (name + " [" + str(bdaddr) + "]")
-        l[name] = bdaddr
-    return l
-devs = lookUpNearbyBluetoothDevices()
+    @staticmethod
+    def lookUpNearbyBluetoothDevices():
+        nearby_devices = bluetooth.discover_devices()
+        l = {}
+        for bdaddr in nearby_devices:
+            name = str(bluetooth.lookup_name( bdaddr ))
+            print (name + " [" + str(bdaddr) + "]")
+            l[name] = bdaddr
+        BluetoothServer.devices = l
 
-name = input("Connect to: ")
+    def updateCommand(self, key, value):
+        self.sock.send(createChangeCommand(key, value))
 
-port = 1
-sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-sock.connect((devs[name], port))
+    def sync(self):
+        self.sock.send(createGetCommands())
+        self.commands = json.loads(self.sock.recv(4048).decode())
 
-while (True):
-    c = input("Command = ")
-    if (c == "c"):
-        key = input("Key = ")
-        value = input("Value = ")
-        sock.send(createChangeCommand(key, value))
-    if (c == "g"):
-        sock.send(createGetCommands())
-        sock.recv(1024).decode()
-    if (c == "q"):
-        break
-sock.close()
+    def close(self):
+        self.sock.close()
