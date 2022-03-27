@@ -6,7 +6,7 @@
 # Taken from: https://people.csail.mit.edu/albert/bluez-intro/c212.html
 from time import sleep
 import bluetooth
-
+from commands import *
 def receiveMessages():
     server_sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
@@ -46,8 +46,15 @@ port = 1
 sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((devs[name], port))
 
-for i in range(0,10):
-    sock.send("hello!!")
-    sleep(1)
-
+while (True):
+    c = input("Command = ")
+    if (c == "c"):
+        key = input("Key = ")
+        value = input("Value = ")
+        sock.send(createChangeCommand(key, value))
+    if (c == "g"):
+        sock.send(createGetCommands())
+        sock.recv(1024).decode()
+    if (c == "q"):
+        break
 sock.close()
