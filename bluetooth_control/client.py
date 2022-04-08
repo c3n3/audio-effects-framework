@@ -31,7 +31,10 @@ class BlueToothHandler():
 
     def executeCommand(self, val):
         if (val["command"] == GET_COMMANDS_COMMAND):
-            self.cli.send(createReturnCommands(aef.getCommands()))
+            print("Test")
+            vals = createReturnCommands(aef.getCommands())
+            print("sending", vals)
+            self.send(vals)
         if (val["command"] == CHANGE_COMMAND):
             print("Changing", val["key"], "to", val["value"])
             aef.changeLink(val["key"], val["value"])
@@ -40,6 +43,14 @@ class BlueToothHandler():
         self.cli.close()
         self.server_sock.close()
 
+
+    def send(self, string):
+        for i in range((len(string) // 1000) + 1):
+            end = (i+1) * 1000
+            if (end > len(string)):
+                end = len(string)
+            send = string[i*1000:end]
+            self.cli.send(send)
 
 effects = "../default_effects/"
 presets = "../default_presets/"
@@ -62,8 +73,9 @@ while (True):
         print("Keyboard shutdown")
         if (blue != None):
             blue.close()
-        break
-    except:
+        exit()
+    except Exception as e:
+        print(str(e))
         if (blue != None):
             blue.close()
     print("Dropped connection, waiting...")

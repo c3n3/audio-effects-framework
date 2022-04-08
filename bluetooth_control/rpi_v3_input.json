@@ -2,15 +2,15 @@
     {
         "name": "0",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "0",
-        "reg_link": "Viola.pd"
+        "mechanism": "rpi_gpio",
+        "trigger": "12",
+        "reg_link": "Tremolo.pd"
     },
     {
         "name": "1",
         "type": "button",
-        "mechanism": "key_interrupt",
-        "trigger": "1",
-        "reg_link": "Clean.pre"
+        "mechanism": "rpi_gpio",
+        "trigger": "16",
+        "reg_link": "loop"
     }
 ]
