@@ -4,7 +4,7 @@
 # 
 # Taken from: https://people.csail.mit.edu/albert/bluez-intro/x232.html
 # Taken from: https://people.csail.mit.edu/albert/bluez-intro/c212.html
-from time import sleep
+import time
 import bluetooth
 from commands import *
 
@@ -17,6 +17,7 @@ class BluetoothServer():
         self.sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
     def connect(self, addr):
+        self.close()
         self.sock.connect((addr, self.port))
 
     @staticmethod
@@ -33,8 +34,19 @@ class BluetoothServer():
         self.sock.send(createChangeCommand(key, value))
 
     def sync(self):
+        got = ""
         self.sock.send(createGetCommands())
-        self.commands = json.loads(self.sock.recv(4048).decode())
+        start = time.time()
+        while (True):
+            if (time.time() - start > 5):
+                print("Error json is bad")
+                break
+            got += self.sock.recv(1000).decode()
+            try:
+                self.commands = json.loads(got)["values"]
+                break
+            except:
+                print("Invalid json")
 
     def close(self):
         self.sock.close()
