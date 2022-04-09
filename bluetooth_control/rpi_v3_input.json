@@ -1,16 +1,69 @@
 [
     {
-        "name": "0",
+        "name": "B1",
         "type": "button",
         "mechanism": "rpi_gpio",
         "trigger": "12",
         "reg_link": "Tremolo.pd"
     },
     {
-        "name": "1",
+        "name": "B2",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "15",
+        "reg_link": "loop"
+    },
+    {
+        "name": "B3",
         "type": "button",
         "mechanism": "rpi_gpio",
         "trigger": "16",
         "reg_link": "loop"
+    },
+    {
+        "name": "B5",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "14",
+        "reg_link": "loop"
+    },
+    {
+        "name": "B6",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "11",
+        "reg_link": "loop"
+    },
+    {
+        "name": "E1",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "9",
+        "right_trigger": "10",
+        "reg_link": ""
+    },
+    {
+        "name": "E2",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "4",
+        "right_trigger": "5",
+        "reg_link": ""
+    },
+    {
+        "name": "E3",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "6",
+        "right_trigger": "7",
+        "reg_link": ""
+    },
+    {
+        "name": "E4",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "17",
+        "right_trigger": "23",
+        "reg_link": ""
     }
 ]
