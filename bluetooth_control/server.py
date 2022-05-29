@@ -14,10 +14,12 @@ class BluetoothServer():
     def __init__(self):
         self.commands = {}
         self.port = 1
-        self.sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-
+        self.sock = None
     def connect(self, addr):
-        self.close()
+        if (self.sock):
+            self.sock.close()
+        self.sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+        print("Connecting", addr, self.port, self.sock)
         self.sock.connect((addr, self.port))
 
     @staticmethod
@@ -48,5 +50,3 @@ class BluetoothServer():
             except:
                 print("Invalid json")
 
-    def close(self):
-        self.sock.close()

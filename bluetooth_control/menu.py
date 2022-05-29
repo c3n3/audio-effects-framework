@@ -83,6 +83,7 @@ def refresh():
     bluetoothMenu["menu"].delete(0, "end")
     for key in BluetoothServer.devices:
         bluetoothMenu["menu"].add_command(label=key, command=setBluetooth(key))
+        print("Found: ", key)
 
 def createButtons(parent, commands):
     i = 0
