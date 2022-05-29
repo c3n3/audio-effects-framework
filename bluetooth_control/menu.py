@@ -1,4 +1,5 @@
 # Import module
+import json
 from textwrap import fill
 import tkinter as tk
 from turtle import title
@@ -34,16 +35,22 @@ root.geometry( "400x400" )
 #     }
 # }
 
-buttons = {
-    "B1": tk.StringVar(),
-    "B2": tk.StringVar(),
-    "B3":  tk.StringVar(),
-    "B4":  tk.StringVar(),
-    "B5":  tk.StringVar(),
-    "B6":  tk.StringVar(),
-    "B7":  tk.StringVar(),
-    "B8":  tk.StringVar()
-}
+f = open("rpi_v3_input.json")
+
+
+inputData = json.load(f)
+
+f.close()
+
+buttons = {}
+
+def getName(arr, name):
+    for x in arr:
+        if x["name"] == name:
+            return x
+
+for b in inputData:
+    buttons[b["name"]] = tk.StringVar()
 
 def buttonChange(*args):
     var = args[0]
@@ -95,10 +102,14 @@ def createButtons(parent, commands):
         menuButton.pack(expand=True, fill="both")
         menu = tk.Menu(menuButton)
         for type in commands.keys():
+            count = 0
             commandMenu = tk.Menu(menu, tearoff=0)
             for command in commands[type].keys():
-                commandMenu.add_command(label=command, command=changeButton(button, command))
-            menu.add_cascade(label=type, menu=commandMenu)
+                if (commands[type][command]["input_type"] == getName(inputData, button)["type"]):
+                    commandMenu.add_command(label=command, command=changeButton(button, command))
+                    count += 1
+            if (count != 0):
+                menu.add_cascade(label=type, menu=commandMenu)
         menuButton.config(menu=menu)
         parent.columnconfigure(i, weight=1)
         i += 1
