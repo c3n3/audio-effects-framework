@@ -4,6 +4,7 @@ class Constants():
     SRC_DIR = os.path.dirname(__file__)
     DEFAULT_PD_DIR = 'default/'
     RESULT_PD = "master.pd"
+    TOP_PD = "top.pd"
     SCRIPTS_DIR = "scripts/"
     RECORDING_DIR = "recordings/"
     GLOBAL_PD = 'global.pd'

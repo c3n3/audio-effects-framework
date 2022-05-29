@@ -59,7 +59,7 @@ class PdHandler():
             PdHandler.staticFiles,
             PdHandler.staticPd,
             None)
-        
+
     @staticmethod
     def parseFiles():
         """Parses all PD files
@@ -70,8 +70,7 @@ class PdHandler():
             PdHandler.staticFiles,
             PdHandler.staticPd,
             GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD)
-        PdHandler.killPuredata()
-        PdHandler.runPuredata()
+        PdHandler.resetPuredata()
 
     @staticmethod
     def parseGlobals():
@@ -121,6 +120,12 @@ class PdHandler():
                 sleep(0.2)
 
     @staticmethod
+    def resetPuredata():
+        PdHandler.pdAction("off", "", 2998)
+        sleep(0.1)
+        PdHandler.pdAction("on", "", 2998)
+
+    @staticmethod
     def cleanUpPuredata():
         """Cleans up all instances of puredata.
         """
@@ -134,7 +139,7 @@ class PdHandler():
         os.system("pd {} -jack -nojackconnect -jackname user_pd {} >> {}&"
             .format(
                 "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-                GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD,
+                GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
                 GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
                 ))
         JackHandler.jackConnectAll()
@@ -157,4 +162,5 @@ class PdHandler():
         JackHandler.init()
         PdHandler.dir = GlobalSettings.settings['effects_dir']
         PdHandler.parseGlobals()
+        PdHandler.runPuredata()
         PdHandler.parseFiles()
