@@ -1,0 +1,16 @@
+[
+    {
+        "name": "0",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "0",
+        "reg_link": "Viola.pd"
+    },
+    {
+        "name": "1",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "1",
+        "reg_link": "Clean.pre"
+    }
+]

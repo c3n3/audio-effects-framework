@@ -103,4 +103,3 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
 
 def changeLink(inputName, newRegLink):
     aitpi.changeInputRegLink(inputName, newRegLink)
-
