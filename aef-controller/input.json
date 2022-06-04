@@ -1,16 +1,142 @@
 [
     {
-        "name": "0",
+        "name": "Button 0",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "0",
-        "reg_link": "Viola.pd"
+        "reg_link": "Bad.pre"
     },
     {
-        "name": "1",
+        "name": "Button 1",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "1",
-        "reg_link": "Clean.pre"
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button 2",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "2",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button 3",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "3",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button 4",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "4",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button 5",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "5",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button 6",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "6",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button 7",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "7",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button 8",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "8",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button 9",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "9",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button q",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "q",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button w",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "w",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button e",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "e",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button r",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "r",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button t",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "t",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button y",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "y",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button u",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "u",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button i",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "i",
+        "reg_link": "Delay2.pd"
+    },
+    {
+        "name": "Button o",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "o",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button p",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "p",
+        "reg_link": "Delay2.pd"
     }
 ]

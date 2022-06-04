@@ -60,16 +60,11 @@ def buttonChange(*args):
 def changeButton(button, value):
     def sub_function():
         controller.update(button, value)
-        print("Changeing '" + button + "' to '" + value + "'")
+        print("Changing '" + button + "' to '" + value + "'")
     return sub_function
 
 def sync(*args):
     createButtons(bottom, controller.getCommnds())
-
-def setBluetooth(value):
-    def subFunction():
-        bluetoothValue.set(value)
-    return subFunction
 
 def createButtons(parent, commands):
     i = 0
@@ -86,7 +81,7 @@ def createButtons(parent, commands):
         )
         frame.grid(row=j, column=i, sticky="news")
         menuButton = tk.Menubutton(frame, text=button, underline=0)
-        menuButton.pack(expand=True, fill="both")
+        menuButton.pack(expand=True, fill="both", side=tk.BOTTOM)
         menu = tk.Menu(menuButton)
         for type in commands.keys():
             count = 0
@@ -100,36 +95,51 @@ def createButtons(parent, commands):
         menuButton.config(menu=menu)
         parent.columnconfigure(i, weight=1)
         i += 1
-        if (i == 4):
+        if (i == 1):
             parent.rowconfigure(j, weight=1)
             i = 0
             j += 1
 
-top = tk.Frame(
-        master=root,
-        relief=tk.RAISED,
-        borderwidth=1
-)
-top.grid(row=0, column=0)
-root.rowconfigure(0, weight=0)
-
-button = tk.Button(top, command=sync, text="Sync")
-button.pack(side=tk.LEFT)
-
-devs = ["think", "Caden"]
-
-bluetoothValue = tk.StringVar(value="Select")
-bluetoothMenu = tk.OptionMenu(top, bluetoothValue, *devs)
-bluetoothMenu.pack(side=tk.RIGHT)
+# top = tk.Frame(
+#         master=root,
+#         relief=tk.RAISED,
+#         borderwidth=1
+# )
+# top.pack(row=0, column=0)
+# root.rowconfigure(0, weight=0)
 
 
-bottom = tk.Frame(
-        master=root,
-        relief=tk.RAISED,
-        borderwidth=1
-)
-bottom.grid(row=1, column=0)
-root.rowconfigure(1, weight=1)
+
+scLeft = tk.Scrollbar(root)
+scLeft.pack( side = tk.LEFT, fill = tk.Y )
+
+mylist = tk.Listbox(root, yscrollcommand = scLeft.set )
+for line in range(100):
+   mylist.insert(tk.END, "This is line number " + str(line))
+
+mylist.pack( side = tk.LEFT, fill = tk.BOTH )
+scLeft.config( command = mylist.yview )
+
+
+scrollbar = tk.Scrollbar(root)
+scrollbar.pack( side = tk.RIGHT, fill = tk.Y )
+
+mylist = tk.Listbox(root, yscrollcommand = scrollbar.set )
+for line in range(50):
+   mylist.insert(tk.END, "This is " + str(line))
+
+mylist.pack( side = tk.LEFT, fill = tk.BOTH )
+scrollbar.config( command = mylist.yview )
+
+
+# bottom = tk.Scrollbar(
+#         master=root,
+#         relief=tk.RAISED,
+#         borderwidth=1
+# )
+
+# bottom.grid(row=1, column=0)
+# root.rowconfigure(1, weight=1)
 
 # createButtons(bottom)
 
@@ -146,6 +156,8 @@ clicked.set( "Monday" )
 
 i = 0
 j = 0
+
+# sync()
 
 # Execute tkinter
 root.mainloop()
