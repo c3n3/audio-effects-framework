@@ -164,3 +164,4 @@ class PdHandler():
         PdHandler.parseGlobals()
         PdHandler.runPuredata()
         PdHandler.parseFiles()
+        PdHandler.resetPuredata()

@@ -2,7 +2,7 @@ import os
 from time import sleep
 from aef.constants import Constants
 from aef.settings import GS_temp, GlobalSettings
-from jack_node import JackNode
+from aef.jack_node import JackNode
 class JackHandler():
     """Handles all things with jack
     """
@@ -37,16 +37,17 @@ class JackHandler():
            Do not run if user_pd is not started. Will potentially lead to deadlock
         """
         userPd = JackNode("user_pd")
+        globalPd = JackNode("global_pd")
         i = 0
-        while not userPd.isValid():
+        while not userPd.isValid() and not globalPd.isValid():
             userPd.getInfo()
+            globalPd.getInfo()
             i += 0.5
             sleep(0.5)
             if (i > 10):
-                print("Could not find user_pd")
+                print("Could not find user_pd or global_pd")
                 break
 
-        globalPd = JackNode("global_pd")
         system = JackNode("system", 'playback', 'capture')
 
         JackNode.connect(userPd, globalPd)

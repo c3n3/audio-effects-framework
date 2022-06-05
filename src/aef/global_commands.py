@@ -45,7 +45,7 @@ class GlobalCommands():
         if (leftOrRight == "LEFT"):
             GlobalCommands._volume = GlobalCommands._volume - 5 if GlobalCommands._volume != 0 else 0
         elif (leftOrRight == "RIGHT"):
-            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 200 else 200
+            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 400 else 400
         PdHandler.pdAction("__default__volume", GlobalCommands._volume / 100, 2999)
 
     @staticmethod
