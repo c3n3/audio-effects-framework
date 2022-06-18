@@ -27,7 +27,7 @@ class Recorder():
                 Recorder.recordingCount += 1
                 if (os.path.isfile(file) == False):
                     break
-                
+
             os.system('cp {}loop.wav {}'.format(GlobalSettings.settings['temp_dir'], file))
             PostalService.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 

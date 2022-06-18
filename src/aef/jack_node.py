@@ -22,7 +22,7 @@ class JackNode():
         res = res.split("\n")
         res.remove("")
         return res
-    
+
     def get(self, io, index):
         if (index < 0):
             return ""

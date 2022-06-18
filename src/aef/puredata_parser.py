@@ -28,7 +28,7 @@ class RoutingHook():
         self.current = self.current + self.increment
         if (self.current > self.max):
             self.current = self.max
-    
+
     def down(self):
         self.current = self.current - self.increment
         if (self.current < self.min):

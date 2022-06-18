@@ -50,7 +50,7 @@ class PdHandler():
         try:
             for (dirpath, dirnames, filenames) in os.walk(PdHandler.dir):
                 f.extend(filenames)
-                break            
+                break
         except:
             Logger.log("no pd files available", Logger.WARNING)
         PuredataParser.parse(
@@ -156,7 +156,7 @@ class PdHandler():
         command = "echo {} {} \; | pdsend {} >> {}".format(prefix, action, port,
             GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)
         os.system(command)
-    
+
     @staticmethod
     def initPd():
         JackHandler.init()

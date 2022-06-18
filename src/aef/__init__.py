@@ -9,7 +9,7 @@ from aef.preset_handler import PresetHandler
 from aef.settings import GS_temp, GlobalSettings
 from aef.recorder import Recorder
 from aitpi.mirrored_json import MirroredJson
-from aef.PdRoutingHandler import PdRoutingHandler
+from aef.pd_routing_handler import PdRoutingHandler
 import aitpi
 import os
 
@@ -53,7 +53,7 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
                 GlobalSettings.settings['temp_dir'], "foldered_commands.temp.json"))
 
         folderCommands._settings = []
-        
+
         # Setup recordings
         folderCommands._settings.append({})
         folderCommands[0]['name'] = 'Recordings'

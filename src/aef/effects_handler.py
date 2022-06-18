@@ -9,7 +9,7 @@ class EffectsHandler():
             print("adding: ", msg.name)
             PdHandler.toggleFile(msg.name)
             PdHandler.parseFiles()
-    
+
     @staticmethod
     def init():
         PostalService.addConsumer([EffectsMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, EffectsHandler)

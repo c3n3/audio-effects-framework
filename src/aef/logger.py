@@ -31,7 +31,6 @@ class Logger():
 
         elif Logger.log_location == Logger.PRINT:
             pass
-        else: 
-            Logger.log_location = open(Logger.log_location, 'w')    
-            print("AEF::", severity,': ', msg, file = Logger.log_location)  
-            
+        else:
+            Logger.log_location = open(Logger.log_location, 'w')
+            print("AEF::", severity,': ', msg, file = Logger.log_location)

@@ -9,10 +9,10 @@ server = BluetoothServer()
 
 # Create object
 root = tk.Tk()
-  
+
 # Adjust size
 root.geometry( "400x400" )
-  
+
 # Dropdown menu options
 # commands = {
 #     'type1': {
@@ -162,7 +162,7 @@ for b in buttons.keys():
 # datatype of menu text
 clicked = tk.StringVar()
 
- 
+
 
 # initial menu text
 clicked.set( "Monday" )

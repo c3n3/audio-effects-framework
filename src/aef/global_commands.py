@@ -68,7 +68,7 @@ class GlobalCommands():
 
     @staticmethod
     def playLoop():
-        # TODO: Make the loop.wav location a setting 
+        # TODO: Make the loop.wav location a setting
         if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
             PdHandler.pdAction("global_loop", "stop", 3000)
             os.system('cp {}loop.wav {}out.wav >> {}'.format(
