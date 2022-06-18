@@ -186,6 +186,3 @@ class PuredataParser():
             f.write(result)
             f.close()
 
-
-if (__name__ == "__main__"):
-    PuredataParserV2.parse(['Distortion.pd', 'Synth.pd'], './guitar/pd/Effects/', [], './guitar/pd/Global/','./master.pd')
