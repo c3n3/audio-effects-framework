@@ -1,0 +1,11 @@
+#N canvas 72 96 1848 984 10;
+#X obj 217 272 *~ 0.5;
+#X obj 217 251 delwrite~ d 600;
+#X obj 216 296 delread~ d 300;
+#X obj 209 221 inlet~;
+#X obj 210 323 outlet~, f 8;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 3 0 4 0;
