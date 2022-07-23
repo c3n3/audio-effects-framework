@@ -1,6 +1,6 @@
 import os
 from time import sleep
-from aitpi.postal_service import PostalService
+from aitpi import router
 from aef.msg_list import *
 from aef.pd_handler import PdHandler
 from aef.settings import GlobalSettings
@@ -29,7 +29,7 @@ class Recorder():
                     break
 
             os.system('cp {}loop.wav {}'.format(GlobalSettings.settings['temp_dir'], file))
-            PostalService.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
+            router.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 
     @staticmethod
     def playback(file):
@@ -77,4 +77,4 @@ class Recorder():
         Recorder.recordingFolder = GlobalSettings.settings['recordings_dir']
         if (Recorder.inited == False):
             Recorder.inited = True
-            PostalService.addConsumer([RecordingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, Recorder)
+            router.addConsumer([RecordingMessage.msgId], Recorder)

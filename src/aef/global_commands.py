@@ -1,6 +1,6 @@
 from genericpath import isfile
 import os
-from aitpi.postal_service import PostalService
+from aitpi import router
 from aef.constants import Constants
 from aef.msg_list import InputPuredataMessage
 from aef.msg_list import OutputMessage
@@ -30,13 +30,13 @@ class GlobalCommands():
             print("Starting this")
             # PdHandler.pdAction(Looper.prefix + "write", "open loop.wav, __looper__write start", 2999) #start record
             PdHandler.pdAction("global_record", "open loop.wav, global_record start", 3000) #start record
-            PostalService.sendMessage(OutputMessage('*', "STATUS"))
+            router.sendMessage(OutputMessage('*', "STATUS"))
             GlobalCommands.isRecording = True
         else:
             PdHandler.pdAction("global_record", "stop", 3000) # stop record
-            PostalService.sendMessage(OutputMessage(' ', "STATUS"))
+            router.sendMessage(OutputMessage(' ', "STATUS"))
             GlobalCommands.isRecording = False
-        PostalService.sendMessage(OutputMessage("", "REFRESH"))
+        router.sendMessage(OutputMessage("", "REFRESH"))
 
     _volume = 80
 
@@ -55,8 +55,8 @@ class GlobalCommands():
         if (GlobalCommands.isRecording):
             # PdHandler.pdAction(Looper.prefix + "write", "stop", 2999) # stop record
             PdHandler.pdAction("global_record", "stop", 3000) # stop record
-            PostalService.sendMessage(OutputMessage(' ', "STATUS"))
-            PostalService.sendMessage(OutputMessage("", "REFRESH"))
+            router.sendMessage(OutputMessage(' ', "STATUS"))
+            router.sendMessage(OutputMessage("", "REFRESH"))
             GlobalCommands.isRecording = False
             sleep(0.1)
             GlobalCommands.playLoop()
@@ -111,4 +111,4 @@ class GlobalCommands():
 
     @staticmethod
     def init():
-        PostalService.addConsumer([InputPuredataMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, GlobalCommands)
+        router.addConsumer([InputPuredataMessage.msgId], GlobalCommands)

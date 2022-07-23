@@ -1,5 +1,5 @@
 from aef.pd_handler import PdHandler
-from aitpi.postal_service import PostalService
+from aitpi import router
 from aef.msg_list import EffectsMessage
 
 class EffectsHandler():
@@ -12,4 +12,4 @@ class EffectsHandler():
 
     @staticmethod
     def init():
-        PostalService.addConsumer([EffectsMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, EffectsHandler)
+        router.addConsumer([EffectsMessage.msgId], EffectsHandler)

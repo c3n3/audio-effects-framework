@@ -1,5 +1,5 @@
 from aef.msg_list import PresetMessage
-from aitpi.postal_service import PostalService
+from aitpi import router
 from aef.pd_handler import PdHandler
 
 class PresetHandler():
@@ -21,4 +21,4 @@ class PresetHandler():
 
     @staticmethod
     def init():
-        PostalService.addConsumer([PresetMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, PresetHandler)
+        router.addConsumer([PresetMessage.msgId], PresetHandler)

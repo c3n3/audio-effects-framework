@@ -13,8 +13,6 @@ from aef.pd_routing_handler import PdRoutingHandler
 import aitpi
 import os
 
-from aitpi.postal_service import PostalService
-
 _hasRun = False
 
 # Here we must copy over the global pd folder
@@ -62,7 +60,7 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         folderCommands[0]['id'] = RecordingMessage.msgId
         folderCommands[0]['input_type'] = "button"
 
-        # Setup presets
+        # Setup effects
         folderCommands._settings.append({})
         folderCommands[1]['name'] = 'Effects'
         folderCommands[1]["path"] = effectsFolder
@@ -93,13 +91,11 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         class DummyWatcher():
             def consume(self, msg):
                 pass
-        aitpi.PostalService.addConsumer(
+        aitpi.router.addConsumer(
             [OutputMessage.msgId],
-            PostalService.GLOBAL_SUBSCRIPTION,
             DummyWatcher())
 
         _hasRun = True
-
 
 def changeLink(inputName, newRegLink):
     aitpi.changeInputRegLink(inputName, newRegLink)

@@ -1,7 +1,7 @@
 import aitpi
 from aef.constants import Constants
 from aef.msg_list import PdRoutingMessage
-from aitpi.postal_service import PostalService
+from aitpi import router
 from aef.pd_handler import PdHandler
 from aef.puredata_parser import PuredataFile
 from aef.settings import GlobalSettings
@@ -22,7 +22,7 @@ class PdRoutingHandler():
     @staticmethod
     def init():
         PdHandler.initHooks()
-        PostalService.addConsumer([PdRoutingMessage.msgId], PostalService.GLOBAL_SUBSCRIPTION, PdRoutingHandler)
+        router.addConsumer([PdRoutingMessage.msgId], PdRoutingHandler)
 
         aitpi.clearCommandTypeInRegistry(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG, PdRoutingHandler.commandRegType)
         for hook in PuredataFile.routingHooks:

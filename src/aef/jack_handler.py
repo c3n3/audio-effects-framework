@@ -3,6 +3,8 @@ from time import sleep
 from aef.constants import Constants
 from aef.settings import GS_temp, GlobalSettings
 from aef.jack_node import JackNode
+from aef.common import runSilent
+
 class JackHandler():
     """Handles all things with jack
     """
@@ -13,21 +15,19 @@ class JackHandler():
         """Initializes the jack server
         """
         global settings
-        os.system("killall pd >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+        runSilent("killall pd")
         if (GlobalSettings.settings['use_qjack'] == 'True'):
-            os.system("qjackctl --start --preset=guitar-module &")
+            runSilent("qjackctl --start --preset=guitar-module &")
         else:
-            os.system("sh {}/jack_start.sh >> {}".format(GS_temp(Constants.SCRIPTS_DIR),
+            runSilent("sh {}/jack_start.sh >> {}".format(GS_temp(Constants.SCRIPTS_DIR),
                 GS_temp(Constants.SHELL_LOG_FILE)))
-        while (os.system("jack_control status >> {}".format(
-            GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
-        )) != 0):
-            pass
+        while (runSilent("jack_control status").returncode != 0):
+            sleep(0.1)
         command = ("pd {} -jack -nojackconnect -jackname global_pd {} >> {} &"
             .format("-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
                     GS_temp(Constants.GLOBAL_PD),
                     GS_temp(Constants.SHELL_LOG_FILE)))
-        result = os.system(command)
+        runSilent(command)
         JackHandler.globalPdPid = os.popen("pidof pd").read()
 
 
@@ -39,7 +39,7 @@ class JackHandler():
         userPd = JackNode("user_pd")
         globalPd = JackNode("global_pd")
         i = 0
-        while not userPd.isValid() and not globalPd.isValid():
+        while not userPd.isValid(True) or not globalPd.isValid(True):
             userPd.getInfo()
             globalPd.getInfo()
             i += 0.5
@@ -61,7 +61,5 @@ class JackHandler():
         """Stops jack
         """
         if (GlobalSettings.settings['use_qjack'] == 'True'):
-            os.system("killall qjackctl >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
-        os.system("jack_control stop >> {}".format(GS_temp(Constants.SHELL_LOG_FILE)))
-
-
+            runSilent("killall qjackctl")
+        runSilent("jack_control stop")

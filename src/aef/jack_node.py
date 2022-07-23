@@ -2,6 +2,7 @@ from email.errors import NonPrintableDefect
 import os
 from re import S
 from sys import stdout
+from aef.common import runSilent
 
 class JackNode():
     def __init__(self, name, inputName="input", outputName="output") -> None:
@@ -14,8 +15,10 @@ class JackNode():
         self.outputs = self.getJackInfo(self.outputName)
         self.inputs = self.getJackInfo(self.inputName)
 
-    def isValid(self):
-        return len(self.outputs) + len(self.inputs) > 0
+    def isValid(self, both=False):
+        if not both:
+            return len(self.outputs) + len(self.inputs) > 0
+        return len(self.outputs) > 0 and len(self.inputs) > 0
 
     def getJackInfo(self, io):
         res = os.popen(f"jack_lsp | sed -nr 's/{self.name}:({io}.*?)/\\1/p'").read()
@@ -40,6 +43,4 @@ class JackNode():
     def connect(source, sink):
         for i in range(max(len(source.outputs), len(sink.inputs))):
             run = f"jack_connect {source.name}:{source.get('output', i)} {sink.name}:{sink.get('input', i)}"
-            print("Running", run)
-
-            os.system(run)
+            runSilent(run)

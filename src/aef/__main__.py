@@ -2,7 +2,7 @@ import aef
 import sys
 import os
 import aitpi
-from aitpi.postal_service import PostalService
+from aitpi import router
 
 class OutputWatch():
     def consume(self, msg):
@@ -16,7 +16,7 @@ try:
     aef.run(effectsFolder, recordingsFolder, presetsFolder, sys.argv)
     inputJson = os.path.join(dirname, '../../example_input.json')
     aitpi.initInput(inputJson)
-    PostalService.addConsumer([1004], PostalService.GLOBAL_SUBSCRIPTION, OutputWatch())
+    router.addConsumer([1004], OutputWatch())
     while (True):
         aitpi.takeInput(input("Input: "))
 except KeyboardInterrupt:

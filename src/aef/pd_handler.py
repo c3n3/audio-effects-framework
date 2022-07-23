@@ -136,12 +136,13 @@ class PdHandler():
         """Runs pd
         """
         global settings
-        os.system("pd {} -jack -nojackconnect -jackname user_pd {} >> {}&"
-            .format(
+        run = "pd {} -jack -nojackconnect -jackname user_pd {} >> {}&".format(
                 "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
                 GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
                 GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
-                ))
+                )
+        print(run)
+        os.system(run)
         JackHandler.jackConnectAll()
 
     @staticmethod
