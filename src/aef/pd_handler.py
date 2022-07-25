@@ -3,7 +3,7 @@ from time import sleep
 from aef.constants import Constants
 from aef.settings import GlobalSettings
 from aef.settings import GS_temp
-from aef.puredata_parser import PuredataParser
+from aef.pd_parser import PdParser
 from aef.jack_handler import JackHandler
 from aef.logger import Logger
 
@@ -11,8 +11,9 @@ class PdHandler():
     """Handles all pd functions
     """
     recording = False
+    parser = PdParser()
 
-    parser = PuredataParser()
+    parser = PdParser()
 
     dir = None
     staticPd = GS_temp(Constants.DEFAULT_PD_DIR)
@@ -53,22 +54,20 @@ class PdHandler():
                 break
         except:
             Logger.log("no pd files available", Logger.WARNING)
-        PuredataParser.parse(
-            f,
-            PdHandler.dir,
-            PdHandler.staticFiles,
-            PdHandler.staticPd,
-            None)
+        parse = [f"{PdHandler.dir}/{x}" for x in f]
+        parse.extend([f"{PdHandler.staticPd}/{x}" for x in PdHandler.staticFiles])
+        print(parse)
+        print(PdHandler.dir)
+        PdHandler.parser.parseFiles(parse, None)
 
     @staticmethod
     def parseFiles():
         """Parses all PD files
         """
-        PuredataParser.parse(
-            PdHandler.files,
-            PdHandler.dir,
-            PdHandler.staticFiles,
-            PdHandler.staticPd,
+        parse = [f"{PdHandler.dir}/{x}" for x in PdHandler.files]
+        parse.extend([f"{PdHandler.staticPd}/{x}" for x in PdHandler.staticFiles])
+        PdHandler.parser.parseFiles(
+            parse,
             GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD)
         PdHandler.resetPuredata()
 
