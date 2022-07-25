@@ -18,6 +18,11 @@
 #X obj 607 227 loadbang;
 #X obj 108 62 *~ 1.0001;
 #X obj 290 730 *~ 1.0002;
+#X obj 134 25 inlet~;
+#X obj 208 26 inlet~;
+#X obj 271 802 outlet~;
+#X obj 351 801 outlet~;
+#X obj 370 74 inlet;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
@@ -37,3 +42,7 @@
 #X connect 16 0 15 0;
 #X connect 17 0 9 0;
 #X connect 17 0 11 0;
+#X connect 18 0 21 0;
+#X connect 18 0 22 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
