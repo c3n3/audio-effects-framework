@@ -56,8 +56,6 @@ class PdHandler():
             Logger.log("no pd files available", Logger.WARNING)
         parse = [f"{PdHandler.dir}/{x}" for x in f]
         parse.extend([f"{PdHandler.staticPd}/{x}" for x in PdHandler.staticFiles])
-        print(parse)
-        print(PdHandler.dir)
         PdHandler.parser.parseFiles(parse, None)
 
     @staticmethod
@@ -140,7 +138,6 @@ class PdHandler():
                 GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
                 GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
                 )
-        print(run)
         os.system(run)
         JackHandler.jackConnectAll()
 

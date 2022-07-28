@@ -27,7 +27,6 @@ class GlobalCommands():
         """Starts recording audio
         """
         if (not GlobalCommands.isRecording):
-            print("Starting this")
             # PdHandler.pdAction(Looper.prefix + "write", "open loop.wav, __looper__write start", 2999) #start record
             PdHandler.pdAction("global_record", "open loop.wav, global_record start", 3000) #start record
             router.sendMessage(OutputMessage('*', "STATUS"))
@@ -100,7 +99,7 @@ class GlobalCommands():
             To change the volume, send 'volume:<0-100>' where of course you change the <...> to a number
         """
         # We do not care if the button is down, just up
-        if (msg.event == "DOWN"):
+        if (msg.event == "1"):
             return
         if (msg.name == 'record'):
             GlobalCommands.record()

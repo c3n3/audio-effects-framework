@@ -40,5 +40,13 @@
         "mechanism": "key_interrupt",
         "trigger": "q",
         "reg_link": ""
+    },
+    {
+        "name": "Encoder 1",
+        "type": "encoder",
+        "mechanism": "key_interrupt",
+        "left_trigger": "j",
+        "right_trigger": "k",
+        "reg_link": "Tremolo__osc_rate"
     }
 ]

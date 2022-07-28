@@ -65,7 +65,7 @@ class Recorder():
         """
 
         # We only care about UP
-        if (msg.event == "DOWN"):
+        if (msg.event == "1"):
             return
         if (msg.name == 'save'):
             Recorder.save()

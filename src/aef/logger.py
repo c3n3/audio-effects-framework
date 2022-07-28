@@ -1,3 +1,4 @@
+# Horrible file please fix
 class Logger():
     """The logger class. Used to log any useful messages.
        Use this instead of print in ALL cases

@@ -10,7 +10,7 @@ class PresetHandler():
         Args:
             msg (Message): Message containing the preset to run
         """
-        if (msg.event == "DOWN"):
+        if (msg.event == "1"):
             return
         f = open(msg.attributes['path'] + msg.name, "r")
         lines = f.readlines()

@@ -4,7 +4,6 @@ from aef.msg_list import PdRoutingMessage
 from aitpi import router
 from aef.pd_handler import PdHandler
 from aef.pd_parser import PdParser
-from aef.puredata_parser import PuredataFile
 from aef.settings import GlobalSettings
 
 class PdRoutingHandler():
@@ -12,7 +11,7 @@ class PdRoutingHandler():
 
     @staticmethod
     def update(hook):
-        print("Updating hook")
+        print("Updating hook", hook.routeId, hook.current)
         PdHandler.pdAction(hook.routeId, hook.current, 2999)
 
     @staticmethod

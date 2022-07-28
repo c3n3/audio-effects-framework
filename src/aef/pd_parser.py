@@ -12,45 +12,36 @@ class GlobalObject():
     def __init__(self, find, replaceFun):
         self.find = find
         self.replaceFun = replaceFun
-
+        self.stubName = ""
     def findAndReplace(self, file, contents):
-        stubName = re.sub(".*/([^/]*?)\.pd", "\\1", file)
-        stubName = stubName.replace(".", "")
-        stubName = stubName.replace("pd", "")
-        replace = self.replaceFun(stubName)
+        self.stubName = re.sub(".*/([^/]*?)\.pd", "\\1", file)
+        self.stubName = self.stubName.replace(".", "")
+        self.stubName = self.stubName.replace("pd", "")
+        replace = self.replaceFun(self.stubName)
         return re.sub(self.find, replace, contents)
 
 class RoutingHook():
     hookCache = None
-    runCache = False
     editCache = False
     cacheThread = None
 
     @staticmethod
     def initCache():
         if RoutingHook.hookCache is None:
-            RoutingHook.hookCache = MirroredJson(f"{GlobalSettings.settings['temp_dir']}/hook.cache.json")
-            RoutingHook.cacheThread = Thread(target=RoutingHook.updateCacheThread)
+            RoutingHook.hookCache = MirroredJson(f"{GlobalSettings.settings['temp_dir']}/hook.cache.json", autosave=False)
+            RoutingHook.cacheThread = Thread(target=RoutingHook.updateCacheThread, daemon=True)
             RoutingHook.cacheThread.start()
     
     @staticmethod
-    def killCache():
-        # TODO: This killing method relies on the thread sleep to complete, maybe there is
-        # definitely a snapier way to do this
-        RoutingHook.runCache = False
-        RoutingHook.cacheThread.join()
-
-    @staticmethod
     def updateCacheThread():
-        while RoutingHook.runCache:
+        while True:
             # Only save when there is an edit
             # TODO: Maybe we need a mutex here, probably not
             if RoutingHook.editCache:
                 RoutingHook.hookCache.save()
             RoutingHook.editCache = False
-            # 1 second delay should be good
-            print("UPDATING CACHE")
-            sleep(1000)
+            # 5 second delay should be good
+            sleep(5)
 
     def __init__(self, string):
         self.low = 0
@@ -76,22 +67,24 @@ class RoutingHook():
             self.current = float(split[4])
         except:
             self.current = (self.max + self.min) / 2
-        if self.routeId in RoutingHook.hookCache.keys():
-            self.current = self.hookCache[self.routeId]
+        if self.name in RoutingHook.hookCache.keys():
+            self.current = self.hookCache[self.name]
         else:
             # TODO: Potential cache bloat from old entries
-            RoutingHook.hookCache[self.routeId] = self.current
+            RoutingHook.hookCache[self.name] = self.current
 
     def up(self):
         self.current = self.current + self.increment
         if (self.current > self.max):
             self.current = self.max
+        RoutingHook.hookCache[self.name] = self.current
         RoutingHook.editCache = True
 
     def down(self):
         self.current = self.current - self.increment
         if (self.current < self.min):
             self.current = self.min
+        RoutingHook.hookCache[self.name] = self.current
         RoutingHook.editCache = True
 
 
@@ -99,26 +92,28 @@ class PdParser():
     hooks = {}
     filesToHooks = {}
     files = {}
-    globalObjects = [
+    globalObjects = {
         # Replace all names of '__' routing objects so that it is simple to identify
-        GlobalObject(
+        "route": GlobalObject(
             find="(#X obj [0-9]+? [0-9]+? route) (__[^\s]*?;)",
             replaceFun="\\1 {}\\2".format
         )
-    ]
+    }
 
 
     def __init__(self):
         RoutingHook.initCache()
         self.subPatchIndex = 0
-        pass
 
     def addHook(self, string, file):
         hook = RoutingHook(string)
         if (hook.routeId != None):
-            print("Adding hook")
-            PdParser.hooks[hook.routeId] = hook
-            PdParser.filesToHooks[file] = hook
+            PdParser.hooks[hook.name] = hook
+            simpleName = re.sub(".*/([^/]*?)", "\\1", file)
+            if simpleName not in PdParser.filesToHooks:
+                PdParser.filesToHooks[simpleName] = []
+            PdParser.filesToHooks[simpleName].append(hook)
+            print(PdParser.filesToHooks)
 
     def makeCanvasName(self, fileName):
         # Remove funky stuff
@@ -154,16 +149,16 @@ class PdParser():
         # Give canvas a new name
         contents = re.sub(canvas, f"\\1 {newCanvasName} 12;", contents)
 
+        for key, globalObject in PdParser.globalObjects.items():
+            contents = globalObject.findAndReplace(file, contents)
 
         # Find all routing hooks:
-        hook = re.compile("#X obj [0-9]+? [0-9]+? route (__[^\s]*?);")
+        regex = f"#X obj [0-9]+? [0-9]+? route ({PdParser.globalObjects['route'].stubName}__[^\s]*?);"
+        hook = re.compile(regex)
 
         results = re.findall(hook, contents)
         for res in results:
             self.addHook(res, file)
-
-        for globalObject in PdParser.globalObjects:
-            contents = globalObject.findAndReplace(file, contents)
 
         # Cache results
         PdParser.files[file] = contents
@@ -225,8 +220,3 @@ class PdParser():
             f = open(outputFile, "w")
             f.write(resultantFile)        
             f.close()
-
-if __name__ == "__main__":
-    parser = PdParser()
-
-    parser.parseFiles(["Viola.pd", "Delay.pd"], "master.pd")
