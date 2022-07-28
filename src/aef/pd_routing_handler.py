@@ -9,6 +9,12 @@ from aef.settings import GlobalSettings
 
 class PdRoutingHandler():
     commandRegType = "Puredata Hooks"
+
+    @staticmethod
+    def update(hook):
+        print("Updating hook")
+        PdHandler.pdAction(hook.routeId, hook.current, 2999)
+
     @staticmethod
     def consume(msg):
         if (msg.name in PdParser.hooks):
@@ -17,7 +23,7 @@ class PdRoutingHandler():
                 hook.down()
             elif (msg.event == "RIGHT"):
                 hook.up()
-            PdHandler.pdAction(hook.routeId, hook.current, 2999)
+            PdRoutingHandler.update(hook)
 
     @staticmethod
     def init():

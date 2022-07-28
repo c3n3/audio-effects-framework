@@ -3,6 +3,7 @@ import sys
 import os
 import aitpi
 from aitpi import router
+from aef.pd_parser import PdParser
 
 class OutputWatch():
     def consume(self, msg):
@@ -17,6 +18,9 @@ try:
     inputJson = os.path.join(dirname, '../../example_input.json')
     aitpi.initInput(inputJson)
     router.addConsumer([1004], OutputWatch())
+
+    print(PdParser.hooks)
+
     while (True):
         aitpi.takeInput(input("Input: "))
 except KeyboardInterrupt:

@@ -4,7 +4,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "b",
-        "reg_link": "Synth.pd"
+        "reg_link": "Tremolo.pd"
     },
     {
         "name": "Button11",

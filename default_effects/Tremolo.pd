@@ -9,7 +9,7 @@
 #X obj 138 380 *~ 1.0002;
 #X obj 140 333 *~;
 #X floatatom 266 45 5 0 0 0 - - - 0;
-#X obj 266 12 route osc_rate-5-1-20-9;
+#X obj 266 12 route __osc_rate-5-1-20-9;
 #X obj 82 73 inlet~;
 #X obj 131 72 inlet~;
 #X obj 385 113 inlet;

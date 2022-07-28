@@ -5,7 +5,7 @@ file = """
 #N canvas 2320 186 1386 720 12;
 #X obj 240 138 *~ 1.0001;
 #X obj 233 289 *~ 1.0002;
-#X obj 392 70 route volume;
+#X obj 392 70 route __volume;
 #X floatatom 377 144 5 0 0 0 - - - 0;
 #X obj 260 237 *~ 5;
 #X obj 391 32 inlet;

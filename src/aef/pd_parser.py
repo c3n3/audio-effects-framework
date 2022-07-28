@@ -1,4 +1,9 @@
 import re
+from time import sleep
+from aitpi.mirrored_json import MirroredJson
+from aef.constants import Constants
+from threading import Thread
+from aef.settings import GlobalSettings
 
 def LOG(x):
     print(x)
@@ -16,18 +21,50 @@ class GlobalObject():
         return re.sub(self.find, replace, contents)
 
 class RoutingHook():
+    hookCache = None
+    runCache = False
+    editCache = False
+    cacheThread = None
+
+    @staticmethod
+    def initCache():
+        if RoutingHook.hookCache is None:
+            RoutingHook.hookCache = MirroredJson(f"{GlobalSettings.settings['temp_dir']}/hook.cache.json")
+            RoutingHook.cacheThread = Thread(target=RoutingHook.updateCacheThread)
+            RoutingHook.cacheThread.start()
+    
+    @staticmethod
+    def killCache():
+        # TODO: This killing method relies on the thread sleep to complete, maybe there is
+        # definitely a snapier way to do this
+        RoutingHook.runCache = False
+        RoutingHook.cacheThread.join()
+
+    @staticmethod
+    def updateCacheThread():
+        while RoutingHook.runCache:
+            # Only save when there is an edit
+            # TODO: Maybe we need a mutex here, probably not
+            if RoutingHook.editCache:
+                RoutingHook.hookCache.save()
+            RoutingHook.editCache = False
+            # 1 second delay should be good
+            print("UPDATING CACHE")
+            sleep(1000)
+
     def __init__(self, string):
         self.low = 0
         self.high = 0
         self.increment = 0
         self.start = 0
-        self.routeId = string        
+        self.routeId = string
         split = string.split("-")
 
         if (len(split) < 4):
             LOG("Not enough arguments in routing object")
             self.name = None
             return
+        self.name = split[0]
 
         try:
             self.min = float(split[1])
@@ -39,20 +76,28 @@ class RoutingHook():
             self.current = float(split[4])
         except:
             self.current = (self.max + self.min) / 2
+        if self.routeId in RoutingHook.hookCache.keys():
+            self.current = self.hookCache[self.routeId]
+        else:
+            # TODO: Potential cache bloat from old entries
+            RoutingHook.hookCache[self.routeId] = self.current
 
     def up(self):
         self.current = self.current + self.increment
         if (self.current > self.max):
             self.current = self.max
+        RoutingHook.editCache = True
 
     def down(self):
         self.current = self.current - self.increment
         if (self.current < self.min):
             self.current = self.min
+        RoutingHook.editCache = True
 
 
 class PdParser():
     hooks = {}
+    filesToHooks = {}
     files = {}
     globalObjects = [
         # Replace all names of '__' routing objects so that it is simple to identify
@@ -64,13 +109,16 @@ class PdParser():
 
 
     def __init__(self):
+        RoutingHook.initCache()
         self.subPatchIndex = 0
         pass
 
-    def addHook(self, string):
+    def addHook(self, string, file):
         hook = RoutingHook(string)
         if (hook.routeId != None):
+            print("Adding hook")
             PdParser.hooks[hook.routeId] = hook
+            PdParser.filesToHooks[file] = hook
 
     def makeCanvasName(self, fileName):
         # Remove funky stuff
@@ -106,24 +154,24 @@ class PdParser():
         # Give canvas a new name
         contents = re.sub(canvas, f"\\1 {newCanvasName} 12;", contents)
 
-        for globalObject in PdParser.globalObjects:
-            contents = globalObject.findAndReplace(file, contents)
 
         # Find all routing hooks:
         hook = re.compile("#X obj [0-9]+? [0-9]+? route (__[^\s]*?);")
 
         results = re.findall(hook, contents)
-
         for res in results:
-            self.addHook(res)
+            self.addHook(res, file)
 
-        # TODO: rename global variables
+        for globalObject in PdParser.globalObjects:
+            contents = globalObject.findAndReplace(file, contents)
 
         # Cache results
         PdParser.files[file] = contents
         return contents
 
     def parseFiles(self, files, outputFile):
+        print("files", files)
+
         """ Parse files and link in the order presented
 
         Args:

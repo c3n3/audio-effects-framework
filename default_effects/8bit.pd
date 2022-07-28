@@ -9,7 +9,7 @@
 #X floatatom 288 146 5 0 0 0 - - - 0;
 #X obj 277 192 phasor~ 1000;
 #X obj 281 222 -~ 0.5;
-#X obj 288 113 route distortion-500-100-2000-1000;
+#X obj 288 113 route __distortion-500-100-2000-1000;
 #X obj 162 551 *~ 1.0002;
 #X obj 53 60 inlet~;
 #X obj 117 61 inlet~;
