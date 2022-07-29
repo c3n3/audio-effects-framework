@@ -1,9 +1,11 @@
+from operator import truediv
 import os
 from time import sleep
+from turtle import back
 from aef.constants import Constants
 from aef.settings import GS_temp, GlobalSettings
 from aef.jack_node import JackNode
-from aef.common import runSilent
+from aef import shell
 from aef.log import *
 
 class JackHandler():
@@ -16,20 +18,27 @@ class JackHandler():
         """Initializes the jack server
         """
         global settings
-        runSilent("killall pd")
+        shell.run(["killall", "pd"], expectFail=True)
         if (GlobalSettings.settings['use_qjack'] == 'True'):
-            runSilent("qjackctl --start --preset=guitar-module &")
+            shell.run(["qjackctl", "--start", "--preset=guitar-module"], background=True)
         else:
-            runSilent("sh {}/jack_start.sh >> {}".format(GS_temp(Constants.SCRIPTS_DIR),
-                GS_temp(Constants.SHELL_LOG_FILE)))
-        while (runSilent("jack_control status").returncode != 0):
+            shell.run(["sh", "{}/jack_start.sh".format(GS_temp(Constants.SCRIPTS_DIR))])
+        print("HERE")
+        while (shell.run(["jack_control", "status"], expectFail=True).returncode != 0):
             sleep(0.1)
-        command = ("pd {} -jack -nojackconnect -jackname global_pd {} >> {} &"
-            .format("-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-                    GS_temp(Constants.GLOBAL_PD),
-                    GS_temp(Constants.SHELL_LOG_FILE)))
-        runSilent(command)
+        print("DONE")
+        command = " ".join([
+            "pd",
+            "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
+            "-jack",
+            "-nojackconnect",
+            "-jackname",
+            "global_pd",
+            GS_temp(Constants.GLOBAL_PD),
+        ])
+        shell.run(command, background=True, shell=True)
         JackHandler.globalPdPid = os.popen("pidof pd").read()
+        print("REALLY DONE")
 
 
     @staticmethod
@@ -40,6 +49,7 @@ class JackHandler():
         userPd = JackNode("user_pd")
         globalPd = JackNode("global_pd")
         i = 0
+        print("here")
         while not userPd.isValid(True) or not globalPd.isValid(True):
             userPd.getInfo()
             globalPd.getInfo()
@@ -62,5 +72,5 @@ class JackHandler():
         """Stops jack
         """
         if (GlobalSettings.settings['use_qjack'] == 'True'):
-            runSilent("killall qjackctl")
-        runSilent("jack_control stop")
+            shell.run(["killall", "qjackctl"])
+        shell.run(["jack_control", "stop"])

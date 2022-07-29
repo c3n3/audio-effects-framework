@@ -4,10 +4,13 @@ import os
 import aitpi
 from aitpi import router
 from aef.pd_parser import PdParser
+from aef.log import *
+from aef import shell
 
 class OutputWatch():
     def consume(self, msg):
         print("Msg: %s, Type: %s" % (msg.message, msg.type))
+
 
 try:
     dirname = os.path.dirname(__file__)

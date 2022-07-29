@@ -103,7 +103,7 @@ class GlobalSettings():
                 Setting('recordings_dir', '', []),
                 Setting('scale_volume', '5', []),
                 Setting('log_folder', '', []),
-                Setting('log_level', '', ['Debug', 'Info', 'Warning', 'Error']),
+                Setting('log_level', 'Debug', ['Debug', 'Info', 'Warning', 'Error']),
                 Setting('presets_dir', '', []),
                 Setting('effects_dir', '', []),
                 Setting('temp_dir', './temp/', []),

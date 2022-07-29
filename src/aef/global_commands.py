@@ -8,6 +8,7 @@ from aef.pd_handler import PdHandler
 from time import sleep
 from aef.log import *
 from aef.settings import GlobalSettings
+from aef import shell
 
 class GlobalCommands():
     """Handles sending all global commands
@@ -70,10 +71,11 @@ class GlobalCommands():
         # TODO: Make the loop.wav location a setting
         if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
             PdHandler.pdAction("global_loop", "stop", 3000)
-            os.system('cp {}loop.wav {}out.wav >> {}'.format(
-                GlobalSettings.settings['temp_dir'],
-                GlobalSettings.settings['temp_dir'],
-                GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+            shell.run([
+                'cp',
+                '{}loop.wav'.format(GlobalSettings.settings['temp_dir']),
+                '{}out.wav'.format(GlobalSettings.settings['temp_dir'])
+            ])
             sleep(0.2)
             PdHandler.pdAction("global_loop", "open out.wav, global_loop 1", 3000) # start playback
             GlobalCommands.isPlaying = True

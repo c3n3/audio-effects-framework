@@ -11,6 +11,7 @@ from aef.recorder import Recorder
 from aitpi.mirrored_json import MirroredJson
 from aef.pd_routing_handler import PdRoutingHandler
 from aef.log import *
+from aef import shell
 import aitpi
 import os
 
@@ -20,18 +21,14 @@ _hasRun = False
 def ___copyDefaults():
     # Only create one if we have not made it already, lest we overwite saved data
     if (not os.path.isfile(GS_temp(Constants.TEMP_COMMAND_REG))):
-        os.system("cp {} {} >> {}".format(GS_temp(Constants.DEFAULT_COMMAND_REGISTRY),
-        GS_temp(Constants.TEMP_COMMAND_REG),
-        GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+        shell.run(["cp", GS_temp(Constants.DEFAULT_COMMAND_REGISTRY), GS_temp(Constants.TEMP_COMMAND_REG)])
 
 def getCommands():
     return aitpi.getCommands()
 
 def shutdown():
-    if (os.system("jack_control status > {}".format(
-        GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)) == 0
-        ):
-        ilog("\nClosing now.....")
+    if (shell.run(["jack_control", "status"], expectFail=True).returncode == 0):
+        ilog("Closing now.....")
         from aef.jack_handler import JackHandler
         JackHandler.jackStop()
         from aef.pd_handler import PdHandler

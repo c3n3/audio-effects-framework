@@ -4,6 +4,7 @@ from aitpi import router
 from aef.msg_list import *
 from aef.pd_handler import PdHandler
 from aef.settings import GlobalSettings
+from aef import shell
 
 class Recorder():
     """Handles recording files
@@ -28,7 +29,11 @@ class Recorder():
                 if (os.path.isfile(file) == False):
                     break
 
-            os.system('cp {}loop.wav {}'.format(GlobalSettings.settings['temp_dir'], file))
+            shell.run([
+                'cp',
+                '{}loop.wav'.format(GlobalSettings.settings['temp_dir']),
+                '{}'.format(file)
+            ])
             router.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 
     @staticmethod
@@ -45,7 +50,11 @@ class Recorder():
             Recorder.lastPlayed = file
             copyName = "playback.wav"
             copyFile = "%s%s" % (GlobalSettings.settings['temp_dir'], copyName)
-            os.system("cp {} {}".format(file, copyFile))
+            shell.run([
+                "cp",
+                file,
+                copyFile
+            ])
             sleep(0.1)
             PdHandler.pdAction("global_playback", "open {}, global_playback 1".format(copyName), 3000) # start playback
             Recorder.state = "PLAYING"

@@ -6,6 +6,7 @@ from aef.settings import GS_temp
 from aef.pd_parser import PdParser
 from aef.jack_handler import JackHandler
 from aef.log import *
+from aef import shell
 
 class PdHandler():
     """Handles all pd functions
@@ -105,15 +106,10 @@ class PdHandler():
         pids = os.popen('pidof pd').read().split(" ")
         for pid in pids:
             if (pid != JackHandler.globalPdPid):
-                os.system("sh {}/jack_disconnect_all.sh >> {}".format(
-                    GS_temp(Constants.SCRIPTS_DIR),
-                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-                os.system('kill -9 {} >> {}'.format(
-                    pid,
-                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
-                os.system('wait {} >> {}'.format(
-                    pid,
-                    GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+                shell.run(["sh", "{}/jack_disconnect_all.sh".format(
+                    GS_temp(Constants.SCRIPTS_DIR))])
+                shell.run(['kill', '-9', str(pid)])
+                shell.run(['wait', str(pid)])
                 sleep(0.2)
 
     @staticmethod
@@ -126,19 +122,24 @@ class PdHandler():
     def cleanUpPuredata():
         """Cleans up all instances of puredata.
         """
-        os.system("killall pd >> {}".format(GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE))
+        if shell.run(["pidof", "pd"], expectFail=True).returncode == 0:
+            shell.run(["killall", "pd"])
 
     @staticmethod
     def runPuredata():
         """Runs pd
         """
         global settings
-        run = "pd {} -jack -nojackconnect -jackname user_pd {} >> {}&".format(
-                "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-                GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
-                GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE
-                )
-        os.system(run)
+        run = " ".join([
+            "pd",
+            "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
+            "-jack",
+            "-nojackconnect",
+            "-jackname",
+            "user_pd",
+            GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
+        ])
+        shell.run(run, background=True, shell=True)
         JackHandler.jackConnectAll()
 
     @staticmethod

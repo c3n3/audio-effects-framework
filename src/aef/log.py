@@ -10,9 +10,10 @@ def logLocation():
 def logLevel():
     return GlobalSettings.settings['log_level']
 
-def _output(level, *args):
+def _report(level, infoFromUpstack, *args):
+    print(level, logLevel(), loglevels)
     if loglevels[level] >= loglevels[logLevel()]:
-        loc = inspect.stack()[2]
+        loc = inspect.stack()[infoFromUpstack]
         file = os.path.abspath(loc.filename)
         lineno = loc.lineno
         prefix = f"{file}:{lineno}::{level}:"
@@ -24,6 +25,10 @@ def _output(level, *args):
                 f.write(out)
         else:
             print("AEF::Error: Invalid log location. No logs will be recorded.")
+
+def _output(level, *args):
+    # Up stack 4 times (including 0) for elog, _output, and _report
+    _report(level, 3, *args)
 
 def dlog(*args):
     _output("Debug", *args)
