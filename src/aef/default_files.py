@@ -1,6 +1,6 @@
 from aef import files
 from aef import logger
-from aef.logger import Logger
+from aef.log import *
 from aef.settings import GS_temp
 import os
 
@@ -15,4 +15,4 @@ class DefaultFiles():
                 f.write(file.file)
                 f.close()
             except:
-                Logger.log("Bad default file", "ERROR")
+                elog("Bad default file")

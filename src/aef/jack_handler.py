@@ -4,6 +4,7 @@ from aef.constants import Constants
 from aef.settings import GS_temp, GlobalSettings
 from aef.jack_node import JackNode
 from aef.common import runSilent
+from aef.log import *
 
 class JackHandler():
     """Handles all things with jack
@@ -45,7 +46,7 @@ class JackHandler():
             i += 0.5
             sleep(0.5)
             if (i > 10):
-                print("Could not find user_pd or global_pd")
+                elog("Could not find user_pd or global_pd")
                 break
 
         system = JackNode("system", 'playback', 'capture')

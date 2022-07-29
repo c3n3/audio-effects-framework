@@ -3,10 +3,9 @@ from time import sleep
 from aitpi.mirrored_json import MirroredJson
 from aef.constants import Constants
 from threading import Thread
+from aef.log import *
 from aef.settings import GlobalSettings
 
-def LOG(x):
-    print(x)
 
 class GlobalObject():
     def __init__(self, find, replaceFun):
@@ -52,7 +51,7 @@ class RoutingHook():
         split = string.split("-")
 
         if (len(split) < 4):
-            LOG("Not enough arguments in routing object")
+            elog("Not enough arguments in routing object")
             self.name = None
             return
         self.name = split[0]
@@ -62,7 +61,7 @@ class RoutingHook():
             self.increment = abs(float(split[2]))
             self.max = float(split[3])
         except:
-            LOG("Invalid route arguements")
+            elog("Invalid route arguements")
         try:
             self.current = float(split[4])
         except:
@@ -113,7 +112,6 @@ class PdParser():
             if simpleName not in PdParser.filesToHooks:
                 PdParser.filesToHooks[simpleName] = []
             PdParser.filesToHooks[simpleName].append(hook)
-            print(PdParser.filesToHooks)
 
     def makeCanvasName(self, fileName):
         # Remove funky stuff
@@ -133,7 +131,7 @@ class PdParser():
         try:
             f = open(file)
         except:
-            LOG("Invalid File " + str(file))
+            elog("Invalid File " + str(file))
             return None
 
 
@@ -165,8 +163,6 @@ class PdParser():
         return contents
 
     def parseFiles(self, files, outputFile):
-        print("files", files)
-
         """ Parse files and link in the order presented
 
         Args:

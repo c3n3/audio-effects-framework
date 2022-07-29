@@ -1,6 +1,3 @@
-import os
-from aef.logger import Logger
-import sys
 class AllSettings():
     """Handles command line arguments
     """
@@ -92,8 +89,9 @@ class Setting():
         elif(len(self.possibleVals) == 0):
             self.value = newVal
         else:
-            Logger.log("Invalid value '{}' for '{}'".format(newVal, self.name))
-            Logger.log("Keeping original value: '{}'".format(self.value))
+            # TODO: Cannot use log here since log depends on settings, maybe a better way for this
+            print("AEF::ARGS: Invalid value '{}' for '{}'".format(newVal, self.name))
+            print("AEF::ARGS: Keeping original value: '{}'".format(self.value))
 
 
 class GlobalSettings():
@@ -104,6 +102,8 @@ class GlobalSettings():
                 Setting('debug_pd', 'False', ['True', 'False']),
                 Setting('recordings_dir', '', []),
                 Setting('scale_volume', '5', []),
+                Setting('log_folder', '', []),
+                Setting('log_level', '', ['Debug', 'Info', 'Warning', 'Error']),
                 Setting('presets_dir', '', []),
                 Setting('effects_dir', '', []),
                 Setting('temp_dir', './temp/', []),
@@ -119,7 +119,6 @@ class GlobalSettings():
         Args:
             args (string): argv
         """
-        import os
         # GlobalSettings.settings['result_pd'] = reset_pd
         GlobalSettings.settings['effects_dir'] = effects
         GlobalSettings.settings['presets_dir'] = presets

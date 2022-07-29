@@ -6,7 +6,7 @@ from aef.msg_list import InputPuredataMessage
 from aef.msg_list import OutputMessage
 from aef.pd_handler import PdHandler
 from time import sleep
-
+from aef.log import *
 from aef.settings import GlobalSettings
 
 class GlobalCommands():
@@ -78,7 +78,7 @@ class GlobalCommands():
             PdHandler.pdAction("global_loop", "open out.wav, global_loop 1", 3000) # start playback
             GlobalCommands.isPlaying = True
         else:
-            print("Cannot find looping file")
+            elog("Cannot find looping file")
 
 
     @staticmethod

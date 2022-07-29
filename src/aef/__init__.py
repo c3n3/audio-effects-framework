@@ -10,6 +10,7 @@ from aef.settings import GS_temp, GlobalSettings
 from aef.recorder import Recorder
 from aitpi.mirrored_json import MirroredJson
 from aef.pd_routing_handler import PdRoutingHandler
+from aef.log import *
 import aitpi
 import os
 
@@ -30,7 +31,7 @@ def shutdown():
     if (os.system("jack_control status > {}".format(
         GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)) == 0
         ):
-        print("\nClosing now.....")
+        ilog("\nClosing now.....")
         from aef.jack_handler import JackHandler
         JackHandler.jackStop()
         from aef.pd_handler import PdHandler

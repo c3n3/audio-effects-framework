@@ -5,7 +5,7 @@ from aef.settings import GlobalSettings
 from aef.settings import GS_temp
 from aef.pd_parser import PdParser
 from aef.jack_handler import JackHandler
-from aef.logger import Logger
+from aef.log import *
 
 class PdHandler():
     """Handles all pd functions
@@ -43,7 +43,7 @@ class PdHandler():
             PdHandler.files.remove(file)
         else:
             PdHandler.files.append(file)
-        print("Now contains: ", PdHandler.files)
+        dlog("Effects now contain:", PdHandler.files)
 
     @staticmethod
     def initHooks():
@@ -53,7 +53,7 @@ class PdHandler():
                 f.extend(filenames)
                 break
         except:
-            Logger.log("no pd files available", Logger.WARNING)
+            wlog("no pd files available")
         parse = [f"{PdHandler.dir}/{x}" for x in f]
         parse.extend([f"{PdHandler.staticPd}/{x}" for x in PdHandler.staticFiles])
         PdHandler.parser.parseFiles(parse, None)

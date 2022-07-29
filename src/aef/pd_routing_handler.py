@@ -1,5 +1,6 @@
 import aitpi
 from aef.constants import Constants
+from aef.log import *
 from aef.msg_list import PdRoutingMessage
 from aitpi import router
 from aef.pd_handler import PdHandler
@@ -11,7 +12,7 @@ class PdRoutingHandler():
 
     @staticmethod
     def update(hook):
-        print("Updating hook", hook.routeId, hook.current)
+        dlog("Updating hook", hook.routeId, hook.current)
         PdHandler.pdAction(hook.routeId, hook.current, 2999)
 
     @staticmethod
