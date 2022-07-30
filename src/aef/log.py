@@ -11,7 +11,6 @@ def logLevel():
     return GlobalSettings.settings['log_level']
 
 def _report(level, infoFromUpstack, *args):
-    print(level, logLevel(), loglevels)
     if loglevels[level] >= loglevels[logLevel()]:
         loc = inspect.stack()[infoFromUpstack]
         file = os.path.abspath(loc.filename)

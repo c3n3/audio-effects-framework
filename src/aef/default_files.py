@@ -1,5 +1,4 @@
 from aef import files
-from aef import logger
 from aef.log import *
 from aef.settings import GS_temp
 import os

@@ -41,7 +41,6 @@ class JackNode():
 
     @staticmethod
     def connect(source, sink):
-        print("Running")
         for i in range(max(len(source.outputs), len(sink.inputs))):
             run = ["jack_connect", f"{source.name}:{source.get('output', i)}", f"{sink.name}:{sink.get('input', i)}"]
-            shell.run(run, debug=True)
+            shell.run(run)

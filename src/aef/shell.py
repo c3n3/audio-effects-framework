@@ -4,13 +4,12 @@ import inspect
 import os
 
 def run(command, expectFail=False, shell=False, background=False, debug=False):
-    print(command)
     if not background:
         result = sp.run(command, stdout=sp.PIPE, stderr=sp.PIPE, shell=shell)
+        # Custom log to report caller of this function up stack 3 funcs
         if debug:
-            print(result.stdout)
+            _report("Debug", 2, result.stdout)
         if not expectFail and result.returncode != 0:
-            # Custom log to report caller of this function up stack 3 funcs
             _report("Error", 2,
                 f"""
     Command '{' '.join(command)}' failed:

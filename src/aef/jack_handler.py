@@ -23,10 +23,8 @@ class JackHandler():
             shell.run(["qjackctl", "--start", "--preset=guitar-module"], background=True)
         else:
             shell.run(["sh", "{}/jack_start.sh".format(GS_temp(Constants.SCRIPTS_DIR))])
-        print("HERE")
         while (shell.run(["jack_control", "status"], expectFail=True).returncode != 0):
             sleep(0.1)
-        print("DONE")
         command = " ".join([
             "pd",
             "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
@@ -36,9 +34,7 @@ class JackHandler():
             "global_pd",
             GS_temp(Constants.GLOBAL_PD),
         ])
-        shell.run(command, background=True, shell=True)
-        JackHandler.globalPdPid = os.popen("pidof pd").read()
-        print("REALLY DONE")
+        JackHandler.globalPdPid = shell.run(command, background=True, shell=True).pid
 
 
     @staticmethod
@@ -49,7 +45,6 @@ class JackHandler():
         userPd = JackNode("user_pd")
         globalPd = JackNode("global_pd")
         i = 0
-        print("here")
         while not userPd.isValid(True) or not globalPd.isValid(True):
             userPd.getInfo()
             globalPd.getInfo()

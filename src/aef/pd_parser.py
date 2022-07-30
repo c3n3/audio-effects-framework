@@ -51,7 +51,7 @@ class RoutingHook():
         split = string.split("-")
 
         if (len(split) < 4):
-            elog("Not enough arguments in routing object")
+            ilog(f"Not enough arguments in routing object '{string}'")
             self.name = None
             return
         self.name = split[0]
