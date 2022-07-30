@@ -1,5 +1,6 @@
 from aef.constants import Constants
 from aef.settings import GlobalSettings
+
 name = "{}default.pd".format(Constants.DEFAULT_PD_DIR)
 file = """
 #N canvas 2320 186 1386 720 12;
@@ -23,4 +24,6 @@ file = """
 #X connect 6 0 0 0;
 #X connect 7 0 0 0;
 
-""".format(GlobalSettings.settings['scale_volume'])
+""".format(
+    GlobalSettings.settings["scale_volume"]
+)

@@ -6,9 +6,11 @@ from aef.pd_handler import PdHandler
 from aef.settings import GlobalSettings
 from aef import shell
 
-class Recorder():
+
+class Recorder:
     """Handles recording files
     """
+
     state = "IDLE"
     recordingFolder = None
     recordingExt = ".wav"
@@ -20,20 +22,24 @@ class Recorder():
     def save():
         """Saves a new recording from the looper
         """
-        if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
+        if os.path.isfile("{}loop.wav".format(GlobalSettings.settings["temp_dir"])):
             # Save loop file
-            while (True):
-                name = 'Recording_{}{}'.format(Recorder.recordingCount, Recorder.recordingExt)
-                file = '{}{}'.format(Recorder.recordingFolder, name)
+            while True:
+                name = "Recording_{}{}".format(
+                    Recorder.recordingCount, Recorder.recordingExt
+                )
+                file = "{}{}".format(Recorder.recordingFolder, name)
                 Recorder.recordingCount += 1
-                if (os.path.isfile(file) == False):
+                if os.path.isfile(file) == False:
                     break
 
-            shell.run([
-                'cp',
-                '{}loop.wav'.format(GlobalSettings.settings['temp_dir']),
-                '{}'.format(file)
-            ])
+            shell.run(
+                [
+                    "cp",
+                    "{}loop.wav".format(GlobalSettings.settings["temp_dir"]),
+                    "{}".format(file),
+                ]
+            )
             router.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
 
     @staticmethod
@@ -44,26 +50,24 @@ class Recorder():
             file (str): The file to actually playback
         """
         Recorder.off()
-        if (Recorder.state != "IDLE" and Recorder.lastPlayed == file):
+        if Recorder.state != "IDLE" and Recorder.lastPlayed == file:
             Recorder.state = "IDLE"
-        elif (os.path.isfile(file)):
+        elif os.path.isfile(file):
             Recorder.lastPlayed = file
             copyName = "playback.wav"
-            copyFile = "%s%s" % (GlobalSettings.settings['temp_dir'], copyName)
-            shell.run([
-                "cp",
-                file,
-                copyFile
-            ])
+            copyFile = "%s%s" % (GlobalSettings.settings["temp_dir"], copyName)
+            shell.run(["cp", file, copyFile])
             sleep(0.1)
-            PdHandler.pdAction("global_playback", "open {}, global_playback 1".format(copyName), 3000) # start playback
+            PdHandler.pdAction(
+                "global_playback", "open {}, global_playback 1".format(copyName), 3000
+            )  # start playback
             Recorder.state = "PLAYING"
 
     @staticmethod
     def off():
         """Handles shutting of any recording
         """
-        PdHandler.pdAction("global_playback", "stop", 3000) # start playback
+        PdHandler.pdAction("global_playback", "stop", 3000)  # start playback
 
     @staticmethod
     def consume(msg):
@@ -74,16 +78,16 @@ class Recorder():
         """
 
         # We only care about UP
-        if (msg.event == "1"):
+        if msg.event == "1":
             return
-        if (msg.name == 'save'):
+        if msg.name == "save":
             Recorder.save()
         else:
             Recorder.playback("{}{}".format(Recorder.recordingFolder, msg.name))
 
     @staticmethod
     def init():
-        Recorder.recordingFolder = GlobalSettings.settings['recordings_dir']
-        if (Recorder.inited == False):
+        Recorder.recordingFolder = GlobalSettings.settings["recordings_dir"]
+        if Recorder.inited == False:
             Recorder.inited = True
             router.addConsumer([RecordingMessage.msgId], Recorder)

@@ -7,7 +7,8 @@ from aef.pd_handler import PdHandler
 from aef.pd_parser import PdParser
 from aef.settings import GlobalSettings
 
-class PdRoutingHandler():
+
+class PdRoutingHandler:
     commandRegType = "Puredata Hooks"
 
     @staticmethod
@@ -17,11 +18,11 @@ class PdRoutingHandler():
 
     @staticmethod
     def consume(msg):
-        if (msg.name in PdParser.hooks):
+        if msg.name in PdParser.hooks:
             hook = PdParser.hooks[msg.name]
-            if (msg.event == "LEFT"):
+            if msg.event == "LEFT":
                 hook.down()
-            elif (msg.event == "RIGHT"):
+            elif msg.event == "RIGHT":
                 hook.up()
             PdRoutingHandler.update(hook)
 
@@ -30,8 +31,16 @@ class PdRoutingHandler():
         PdHandler.initHooks()
         router.addConsumer([PdRoutingMessage.msgId], PdRoutingHandler)
 
-        aitpi.clearCommandTypeInRegistry(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG, PdRoutingHandler.commandRegType)
+        aitpi.clearCommandTypeInRegistry(
+            GlobalSettings.settings["temp_dir"] + Constants.TEMP_COMMAND_REG,
+            PdRoutingHandler.commandRegType,
+        )
         for key in PdParser.hooks.keys():
             hook = PdParser.hooks[key]
-            aitpi.addCommandToRegistry(GlobalSettings.settings['temp_dir'] + Constants.TEMP_COMMAND_REG,
-            hook.name, PdRoutingMessage.msgId, PdRoutingHandler.commandRegType, 'encoder')
+            aitpi.addCommandToRegistry(
+                GlobalSettings.settings["temp_dir"] + Constants.TEMP_COMMAND_REG,
+                hook.name,
+                PdRoutingMessage.msgId,
+                PdRoutingHandler.commandRegType,
+                "encoder",
+            )

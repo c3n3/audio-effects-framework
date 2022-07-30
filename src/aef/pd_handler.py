@@ -8,13 +8,13 @@ from aef.jack_handler import JackHandler
 from aef.log import *
 from aef import shell
 
-class PdHandler():
+
+class PdHandler:
     """Handles all pd functions
     """
-    recording = False
-    parser = PdParser()
 
-    parser = PdParser()
+    recording = False
+    parser = None
 
     dir = None
     staticPd = GS_temp(Constants.DEFAULT_PD_DIR)
@@ -22,7 +22,7 @@ class PdHandler():
     files = []
     staticFiles = []
 
-    def __init__ (self):
+    def __init__(self):
         """No init
         """
         raise Exception("No creating this object")
@@ -31,16 +31,16 @@ class PdHandler():
     def pdGlobalCommand(command):
         """A global PD comamnd
         """
-        if (command == "RECORD"):
+        if command == "RECORD":
             PdHandler.record()
-        elif (command == "PLAYBACK"):
+        elif command == "PLAYBACK":
             PdHandler.playback()
 
     @staticmethod
     def toggleFile(file):
         """Used to toggle an effect on or off
         """
-        if (file in PdHandler.files):
+        if file in PdHandler.files:
             PdHandler.files.remove(file)
         else:
             PdHandler.files.append(file)
@@ -66,8 +66,8 @@ class PdHandler():
         parse = [f"{PdHandler.dir}/{x}" for x in PdHandler.files]
         parse.extend([f"{PdHandler.staticPd}/{x}" for x in PdHandler.staticFiles])
         PdHandler.parser.parseFiles(
-            parse,
-            GlobalSettings.settings['temp_dir'] + Constants.RESULT_PD)
+            parse, GlobalSettings.settings["temp_dir"] + Constants.RESULT_PD
+        )
         PdHandler.resetPuredata()
 
     @staticmethod
@@ -76,14 +76,14 @@ class PdHandler():
         """
         for root, dirs, files in os.walk(PdHandler.staticPd, topdown=False):
             for name in files:
-                if ('.pd' in name):
+                if ".pd" in name:
                     PdHandler.staticFiles.append(name)
 
     @staticmethod
     def playback():
         """Used to playback the loop file
         """
-        if (PdHandler.recording):
+        if PdHandler.recording:
             PdHandler.record()
         PdHandler.pdAction("open loop.wav,start", 2999)
 
@@ -91,7 +91,7 @@ class PdHandler():
     def record():
         """Records audio
         """
-        if (not PdHandler.recording):
+        if not PdHandler.recording:
             PdHandler.pdAction("open loop.wav,start")
         else:
             PdHandler.pdAction("stop")
@@ -101,15 +101,21 @@ class PdHandler():
     def killPuredata():
         """Kills the pd process
         """
-        if (PdHandler.recording):
+        if PdHandler.recording:
             PdHandler.record()
-        pids = os.popen('pidof pd').read().split(" ")
+        pids = os.popen("pidof pd").read().split(" ")
         for pid in pids:
-            if (pid != JackHandler.globalPdPid):
-                shell.run(["sh", "{}/jack_disconnect_all.sh".format(
-                    GS_temp(Constants.SCRIPTS_DIR))])
-                shell.run(['kill', '-9', str(pid)])
-                shell.run(['wait', str(pid)])
+            if pid != JackHandler.globalPdPid:
+                shell.run(
+                    [
+                        "sh",
+                        "{}/jack_disconnect_all.sh".format(
+                            GS_temp(Constants.SCRIPTS_DIR)
+                        ),
+                    ]
+                )
+                shell.run(["kill", "-9", str(pid)])
+                shell.run(["wait", str(pid)])
                 sleep(0.2)
 
     @staticmethod
@@ -130,20 +136,24 @@ class PdHandler():
         """Runs pd
         """
         global settings
-        run = " ".join([
-            "pd",
-            "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-            "-jack",
-            "-nojackconnect",
-            "-jackname",
-            "user_pd",
-            GlobalSettings.settings['temp_dir'] + Constants.TOP_PD,
-        ])
+        run = " ".join(
+            [
+                "pd",
+                "-nogui" if GlobalSettings.settings["debug_pd"] == "False" else "",
+                "-jack",
+                "-nojackconnect",
+                "-jackname",
+                "user_pd",
+                GlobalSettings.settings["temp_dir"] + Constants.TOP_PD,
+            ]
+        )
         shell.run(run, background=True, shell=True)
         JackHandler.jackConnectAll()
 
     @staticmethod
-    def pdAction(prefix, action, port = 3000): # this is for sending pd functions via a port
+    def pdAction(
+        prefix, action, port=3000
+    ):  # this is for sending pd functions via a port
         """Sends pd action
 
         Args:
@@ -151,14 +161,19 @@ class PdHandler():
             action (str): the action string
             port (int, optional): The port to send it over. Defaults to 3000.
         """
-        command = "echo {} {} \; | pdsend {} >> {}".format(prefix, action, port,
-            GlobalSettings.settings['temp_dir'] + Constants.SHELL_LOG_FILE)
+        command = "echo {} {} \; | pdsend {} >> {}".format(
+            prefix,
+            action,
+            port,
+            GlobalSettings.settings["temp_dir"] + Constants.SHELL_LOG_FILE,
+        )
         os.system(command)
 
     @staticmethod
     def initPd():
+        PdHandler.parser = PdParser()
         JackHandler.init()
-        PdHandler.dir = GlobalSettings.settings['effects_dir']
+        PdHandler.dir = GlobalSettings.settings["effects_dir"]
         PdHandler.parseGlobals()
         PdHandler.runPuredata()
         PdHandler.parseFiles()

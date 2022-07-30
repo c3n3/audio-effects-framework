@@ -8,9 +8,11 @@ from aef.jack_node import JackNode
 from aef import shell
 from aef.log import *
 
-class JackHandler():
+
+class JackHandler:
     """Handles all things with jack
     """
+
     globalPdPid = -1
     jackdProc = -1
 
@@ -38,17 +40,18 @@ class JackHandler():
             if timeout < 0:
                 elog("Jack did not properly start")
 
-        command = " ".join([
-            "pd",
-            "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
-            "-jack",
-            "-nojackconnect",
-            "-jackname",
-            "global_pd",
-            GS_temp(Constants.GLOBAL_PD),
-        ])
+        command = " ".join(
+            [
+                "pd",
+                "-nogui" if GlobalSettings.settings["debug_pd"] == "False" else "",
+                "-jack",
+                "-nojackconnect",
+                "-jackname",
+                "global_pd",
+                GS_temp(Constants.GLOBAL_PD),
+            ]
+        )
         JackHandler.globalPdPid = shell.run(command, background=True, shell=True).pid
-
 
     @staticmethod
     def jackConnectAll():
@@ -63,17 +66,16 @@ class JackHandler():
             globalPd.getInfo()
             i += 0.5
             sleep(0.5)
-            if (i > 10):
+            if i > 10:
                 elog("Could not find user_pd or global_pd")
                 break
 
-        system = JackNode("system", 'playback', 'capture')
+        system = JackNode("system", "playback", "capture")
 
         JackNode.connect(userPd, globalPd)
         JackNode.connect(system, userPd)
         JackNode.connect(userPd, system)
         JackNode.connect(globalPd, system)
-
 
     @staticmethod
     def jackStop():

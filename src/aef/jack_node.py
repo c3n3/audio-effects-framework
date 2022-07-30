@@ -4,7 +4,8 @@ from re import S
 from sys import stdout
 from aef import shell
 
-class JackNode():
+
+class JackNode:
     def __init__(self, name, inputName="input", outputName="output") -> None:
         self.name = name
         self.outputName = outputName
@@ -27,20 +28,24 @@ class JackNode():
         return res
 
     def get(self, io, index):
-        if (index < 0):
+        if index < 0:
             return ""
-        if (io == 'output'):
-            if (index < len(self.outputs)):
+        if io == "output":
+            if index < len(self.outputs):
                 return self.outputs[index]
-            return self.get(io, index-1)
-        if (io == 'input'):
-            if (index < len(self.inputs)):
+            return self.get(io, index - 1)
+        if io == "input":
+            if index < len(self.inputs):
                 return self.inputs[index]
-            return self.get(io, index-1)
+            return self.get(io, index - 1)
         return ""
 
     @staticmethod
     def connect(source, sink):
         for i in range(max(len(source.outputs), len(sink.inputs))):
-            run = ["jack_connect", f"{source.name}:{source.get('output', i)}", f"{sink.name}:{sink.get('input', i)}"]
+            run = [
+                "jack_connect",
+                f"{source.name}:{source.get('output', i)}",
+                f"{sink.name}:{sink.get('input', i)}",
+            ]
             shell.run(run)

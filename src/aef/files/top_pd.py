@@ -1,5 +1,6 @@
 from aef.constants import Constants
 from aef.settings import GlobalSettings
+
 name = Constants.TOP_PD
 file = """
 #N canvas 636 478 924 984 12;
@@ -18,4 +19,6 @@ file = """
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
 #X connect 7 0 8 0;
-""".format(GlobalSettings.settings['temp_dir'])
+""".format(
+    GlobalSettings.settings["temp_dir"]
+)

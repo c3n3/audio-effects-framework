@@ -6,10 +6,11 @@ from aef.pd_parser import PdParser
 from aef.pd_routing_handler import PdRoutingHandler
 from aef.log import *
 
-class EffectsHandler():
+
+class EffectsHandler:
     @staticmethod
     def consume(msg):
-        if (msg.event == "0"):
+        if msg.event == "0":
             PdHandler.toggleFile(msg.name)
             PdHandler.parseFiles()
             if msg.name in PdParser.filesToHooks:

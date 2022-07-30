@@ -7,11 +7,12 @@ from aef.log import *
 from aef.settings import GlobalSettings
 
 
-class GlobalObject():
+class GlobalObject:
     def __init__(self, find, replaceFun):
         self.find = find
         self.replaceFun = replaceFun
         self.stubName = ""
+
     def findAndReplace(self, file, contents):
         self.stubName = re.sub(".*/([^/]*?)\.pd", "\\1", file)
         self.stubName = self.stubName.replace(".", "")
@@ -19,7 +20,8 @@ class GlobalObject():
         replace = self.replaceFun(self.stubName)
         return re.sub(self.find, replace, contents)
 
-class RoutingHook():
+
+class RoutingHook:
     hookCache = None
     editCache = False
     cacheThread = None
@@ -27,10 +29,14 @@ class RoutingHook():
     @staticmethod
     def initCache():
         if RoutingHook.hookCache is None:
-            RoutingHook.hookCache = MirroredJson(f"{GlobalSettings.settings['temp_dir']}/hook.cache.json", autosave=False)
-            RoutingHook.cacheThread = Thread(target=RoutingHook.updateCacheThread, daemon=True)
+            RoutingHook.hookCache = MirroredJson(
+                f"{GlobalSettings.settings['temp_dir']}/hook.cache.json", autosave=False
+            )
+            RoutingHook.cacheThread = Thread(
+                target=RoutingHook.updateCacheThread, daemon=True
+            )
             RoutingHook.cacheThread.start()
-    
+
     @staticmethod
     def updateCacheThread():
         while True:
@@ -50,7 +56,7 @@ class RoutingHook():
         self.routeId = string
         split = string.split("-")
 
-        if (len(split) < 4):
+        if len(split) < 4:
             ilog(f"Not enough arguments in routing object '{string}'")
             self.name = None
             return
@@ -74,20 +80,20 @@ class RoutingHook():
 
     def up(self):
         self.current = self.current + self.increment
-        if (self.current > self.max):
+        if self.current > self.max:
             self.current = self.max
         RoutingHook.hookCache[self.name] = self.current
         RoutingHook.editCache = True
 
     def down(self):
         self.current = self.current - self.increment
-        if (self.current < self.min):
+        if self.current < self.min:
             self.current = self.min
         RoutingHook.hookCache[self.name] = self.current
         RoutingHook.editCache = True
 
 
-class PdParser():
+class PdParser:
     hooks = {}
     filesToHooks = {}
     files = {}
@@ -95,10 +101,9 @@ class PdParser():
         # Replace all names of '__' routing objects so that it is simple to identify
         "route": GlobalObject(
             find="(#X obj [0-9]+? [0-9]+? route) (__[^\s]*?;)",
-            replaceFun="\\1 {}\\2".format
+            replaceFun="\\1 {}\\2".format,
         )
     }
-
 
     def __init__(self):
         RoutingHook.initCache()
@@ -106,7 +111,7 @@ class PdParser():
 
     def addHook(self, string, file):
         hook = RoutingHook(string)
-        if (hook.routeId != None):
+        if hook.routeId != None:
             PdParser.hooks[hook.name] = hook
             simpleName = re.sub(".*/([^/]*?)", "\\1", file)
             if simpleName not in PdParser.filesToHooks:
@@ -124,7 +129,7 @@ class PdParser():
 
     def parseFile(self, file):
         # Use cached results
-        if (file in  PdParser.files):
+        if file in PdParser.files:
             return PdParser.files[file]
 
         f = None
@@ -134,13 +139,11 @@ class PdParser():
             elog("Invalid File " + str(file))
             return None
 
-
-
         contents = f.read()
         f.close()
-        newCanvasName = self.makeCanvasName(file.split('/').pop())
+        newCanvasName = self.makeCanvasName(file.split("/").pop())
 
-        # First we need to modify the name of the main canvas so as to make it a subcanvas      
+        # First we need to modify the name of the main canvas so as to make it a subcanvas
         # Last item in list is text size, we will force that to be 12
         canvas = re.compile("(#N canvas [0-9]+? [0-9]+? [0-9]+? [0-9]+?) [0-9]+?;")
 
@@ -212,7 +215,7 @@ class PdParser():
         resultantFile += f"#X connect {self.subPatchIndex-1} 0 {dacIndex} 0;\n"
         resultantFile += f"#X connect {self.subPatchIndex-1} 1 {dacIndex} 1;\n"
 
-        if (outputFile is not None):
+        if outputFile is not None:
             f = open(outputFile, "w")
-            f.write(resultantFile)        
+            f.write(resultantFile)
             f.close()

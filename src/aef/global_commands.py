@@ -10,14 +10,17 @@ from aef.log import *
 from aef.settings import GlobalSettings
 from aef import shell
 
-class GlobalCommands():
+
+class GlobalCommands:
     """Handles sending all global commands
 
        TODO: Very much later, we will want an arbitrary style global command setup, but it is not needed now.
     """
+
     isRecording = False
     isPlaying = False
     state = "OFF"
+
     def __init__(self):
         """Static class
         """
@@ -27,14 +30,16 @@ class GlobalCommands():
     def record():
         """Starts recording audio
         """
-        if (not GlobalCommands.isRecording):
+        if not GlobalCommands.isRecording:
             # PdHandler.pdAction(Looper.prefix + "write", "open loop.wav, __looper__write start", 2999) #start record
-            PdHandler.pdAction("global_record", "open loop.wav, global_record start", 3000) #start record
-            router.sendMessage(OutputMessage('*', "STATUS"))
+            PdHandler.pdAction(
+                "global_record", "open loop.wav, global_record start", 3000
+            )  # start record
+            router.sendMessage(OutputMessage("*", "STATUS"))
             GlobalCommands.isRecording = True
         else:
-            PdHandler.pdAction("global_record", "stop", 3000) # stop record
-            router.sendMessage(OutputMessage(' ', "STATUS"))
+            PdHandler.pdAction("global_record", "stop", 3000)  # stop record
+            router.sendMessage(OutputMessage(" ", "STATUS"))
             GlobalCommands.isRecording = False
         router.sendMessage(OutputMessage("", "REFRESH"))
 
@@ -42,25 +47,29 @@ class GlobalCommands():
 
     @staticmethod
     def volume(leftOrRight):
-        if (leftOrRight == "LEFT"):
-            GlobalCommands._volume = GlobalCommands._volume - 5 if GlobalCommands._volume != 0 else 0
-        elif (leftOrRight == "RIGHT"):
-            GlobalCommands._volume = GlobalCommands._volume + 5 if GlobalCommands._volume != 400 else 400
+        if leftOrRight == "LEFT":
+            GlobalCommands._volume = (
+                GlobalCommands._volume - 5 if GlobalCommands._volume != 0 else 0
+            )
+        elif leftOrRight == "RIGHT":
+            GlobalCommands._volume = (
+                GlobalCommands._volume + 5 if GlobalCommands._volume != 400 else 400
+            )
         PdHandler.pdAction("__default__volume", GlobalCommands._volume / 100, 2999)
 
     @staticmethod
     def playback():
         """Starts playback of looped audio
         """
-        if (GlobalCommands.isRecording):
+        if GlobalCommands.isRecording:
             # PdHandler.pdAction(Looper.prefix + "write", "stop", 2999) # stop record
-            PdHandler.pdAction("global_record", "stop", 3000) # stop record
-            router.sendMessage(OutputMessage(' ', "STATUS"))
+            PdHandler.pdAction("global_record", "stop", 3000)  # stop record
+            router.sendMessage(OutputMessage(" ", "STATUS"))
             router.sendMessage(OutputMessage("", "REFRESH"))
             GlobalCommands.isRecording = False
             sleep(0.1)
             GlobalCommands.playLoop()
-        elif (GlobalCommands.isPlaying):
+        elif GlobalCommands.isPlaying:
             PdHandler.pdAction("global_loop", "stop", 3000)
             GlobalCommands.isPlaying = False
         else:
@@ -69,19 +78,22 @@ class GlobalCommands():
     @staticmethod
     def playLoop():
         # TODO: Make the loop.wav location a setting
-        if (os.path.isfile('{}loop.wav'.format(GlobalSettings.settings['temp_dir']))):
+        if os.path.isfile("{}loop.wav".format(GlobalSettings.settings["temp_dir"])):
             PdHandler.pdAction("global_loop", "stop", 3000)
-            shell.run([
-                'cp',
-                '{}loop.wav'.format(GlobalSettings.settings['temp_dir']),
-                '{}out.wav'.format(GlobalSettings.settings['temp_dir'])
-            ])
+            shell.run(
+                [
+                    "cp",
+                    "{}loop.wav".format(GlobalSettings.settings["temp_dir"]),
+                    "{}out.wav".format(GlobalSettings.settings["temp_dir"]),
+                ]
+            )
             sleep(0.2)
-            PdHandler.pdAction("global_loop", "open out.wav, global_loop 1", 3000) # start playback
+            PdHandler.pdAction(
+                "global_loop", "open out.wav, global_loop 1", 3000
+            )  # start playback
             GlobalCommands.isPlaying = True
         else:
             elog("Cannot find looping file")
-
 
     @staticmethod
     def off():
@@ -101,13 +113,13 @@ class GlobalCommands():
             To change the volume, send 'volume:<0-100>' where of course you change the <...> to a number
         """
         # We do not care if the button is down, just up
-        if (msg.event == "1"):
+        if msg.event == "1":
             return
-        if (msg.name == 'record'):
+        if msg.name == "record":
             GlobalCommands.record()
-        elif (msg.name == 'loop'):
+        elif msg.name == "loop":
             GlobalCommands.playback()
-        elif (msg.name == 'volume'):
+        elif msg.name == "volume":
             GlobalCommands.volume(msg.event)
 
     @staticmethod

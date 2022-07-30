@@ -4,7 +4,7 @@ from aef.settings import GS_temp
 import os
 
 # Loop over all the modules inside the files folder, and output to temp
-class DefaultFiles():
+class DefaultFiles:
     @staticmethod
     def init():
         for file in files.files:
