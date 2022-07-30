@@ -12,6 +12,7 @@ class JackHandler():
     """Handles all things with jack
     """
     globalPdPid = -1
+    jackdProc = -1
 
     @staticmethod
     def init():
@@ -19,12 +20,24 @@ class JackHandler():
         """
         global settings
         shell.run(["killall", "pd"], expectFail=True)
-        if (GlobalSettings.settings['use_qjack'] == 'True'):
-            shell.run(["qjackctl", "--start", "--preset=guitar-module"], background=True)
-        else:
-            shell.run(["sh", "{}/jack_start.sh".format(GS_temp(Constants.SCRIPTS_DIR))])
-        while (shell.run(["jack_control", "status"], expectFail=True).returncode != 0):
+        jackCommand = ""
+        file = GlobalSettings.settings["jackdrc"]
+        try:
+            with open(file, "r") as f:
+                jackCommand = f.read()
+            jackCommand = jackCommand.split()
+        except FileNotFoundError:
+            elog("No .jackdr in", file, "- cannot start")
+            exit(1)
+        JackHandler.jackdProc = shell.run(jackCommand, background=True)
+
+        timeout = 10
+        while shell.run(["jack_lsp"], expectFail=True).returncode != 0:
             sleep(0.1)
+            timeout -= 0.1
+            if timeout < 0:
+                elog("Jack did not properly start")
+
         command = " ".join([
             "pd",
             "-nogui" if GlobalSettings.settings['debug_pd'] == 'False' else "",
@@ -66,6 +79,5 @@ class JackHandler():
     def jackStop():
         """Stops jack
         """
-        if (GlobalSettings.settings['use_qjack'] == 'True'):
-            shell.run(["killall", "qjackctl"])
-        shell.run(["jack_control", "stop"])
+        JackHandler.jackdProc.kill()
+        JackHandler.jackdProc.wait()

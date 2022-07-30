@@ -1,3 +1,5 @@
+import os
+
 class AllSettings():
     """Handles command line arguments
     """
@@ -104,12 +106,11 @@ class GlobalSettings():
                 Setting('scale_volume', '5', []),
                 Setting('log_folder', '', []),
                 Setting('log_level', 'Debug', ['Debug', 'Info', 'Warning', 'Error']),
+                Setting('log_level', 'Debug', ['Debug', 'Info', 'Warning', 'Error']),
                 Setting('presets_dir', '', []),
                 Setting('effects_dir', '', []),
                 Setting('temp_dir', './temp/', []),
-                Setting('use_qjack', 'True', ['True', 'False']),
-                Setting('jack_start_num', '1', ['0', '1']),
-                Setting('alsa_device', 'sndrpihifiberry', []), # Device,0
+                Setting('jackdrc', f"{os.getenv('HOME')}/.jackdrc", []),
             ])
 
     @staticmethod

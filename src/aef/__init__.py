@@ -27,14 +27,14 @@ def getCommands():
     return aitpi.getCommands()
 
 def shutdown():
-    if (shell.run(["jack_control", "status"], expectFail=True).returncode == 0):
-        ilog("Closing now.....")
-        from aef.jack_handler import JackHandler
-        JackHandler.jackStop()
-        from aef.pd_handler import PdHandler
-        PdHandler.cleanUpPuredata()
-        global _hasRun
-        _hasRun = False
+    # if (shell.run(["jack_control", "status"], expectFail=True).returncode == 0):
+    ilog("Closing now.....")
+    from aef.jack_handler import JackHandler
+    JackHandler.jackStop()
+    from aef.pd_handler import PdHandler
+    PdHandler.cleanUpPuredata()
+    global _hasRun
+    _hasRun = False
 
 def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
     global _hasRun
