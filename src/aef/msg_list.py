@@ -28,11 +28,6 @@ class OutputMessage(Message):
 
     msgId = 1004
 
-    def __init__(self, message, type):
-        self.message = message
-        self.type = type
-
-
 class EffectsMessage(Message):
     """ Handles effects
     """

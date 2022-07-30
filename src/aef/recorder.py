@@ -40,7 +40,7 @@ class Recorder:
                     "{}".format(file),
                 ]
             )
-            router.sendMessage(OutputMessage("{}\nSaved!".format(name), "NOTIFY"))
+            router.sendMessage(OutputMessage(["{}\nSaved!".format(name), "NOTIFY"]))
 
     @staticmethod
     def playback(file):

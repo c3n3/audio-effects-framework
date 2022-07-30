@@ -117,6 +117,7 @@ class GlobalSettings:
             Setting("log_level", "Debug", ["Debug", "Info", "Warning", "Error"]),
             Setting("presets_dir", "", []),
             Setting("effects_dir", "", []),
+            Setting("bluetooth", "False", ["True", "False"]),
             Setting("temp_dir", "./temp/", []),
             Setting("jackdrc", f"{os.getenv('HOME')}/.jackdrc", []),
         ]

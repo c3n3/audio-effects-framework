@@ -18,7 +18,7 @@ import os
 _hasRun = False
 
 # Here we must copy over the global pd folder
-def ___copyDefaults():
+def _copyDefaults():
     # Only create one if we have not made it already, lest we overwite saved data
     if not os.path.isfile(GS_temp(Constants.TEMP_COMMAND_REG)):
         shell.run(
@@ -35,13 +35,10 @@ def getCommands():
 
 
 def shutdown():
-    # if (shell.run(["jack_control", "status"], expectFail=True).returncode == 0):
     ilog("Closing now.....")
     from aef.jack_handler import JackHandler
-
     JackHandler.jackStop()
     from aef.pd_handler import PdHandler
-
     PdHandler.cleanUpPuredata()
     global _hasRun
     _hasRun = False
@@ -53,7 +50,7 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
         GlobalSettings.init(args, effectsFolder, recordingsFolder, presetsFolder)
         os.makedirs(GlobalSettings.settings["temp_dir"], exist_ok=True)
         DefaultFiles.init()
-        ___copyDefaults()
+        _copyDefaults()
 
         folderCommands = MirroredJson(
             os.path.join(

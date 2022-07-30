@@ -6,12 +6,12 @@ from aitpi import router
 from aef.pd_parser import PdParser
 from aef.log import *
 from aef import shell
+from aef import blutooth_control
 
 
 class OutputWatch:
     def consume(self, msg):
         print("Msg: %s, Type: %s" % (msg.message, msg.type))
-
 
 try:
     dirname = os.path.dirname(__file__)
@@ -23,9 +23,10 @@ try:
     aitpi.initInput(inputJson)
     router.addConsumer([1004], OutputWatch())
 
-    print(PdParser.hooks)
-
-    while True:
-        aitpi.takeInput(input("Input: "))
-except KeyboardInterrupt:
+    if GlobalSettings.settings["bluetooth"] == "True":
+        blutooth_control.run()
+    else:
+        while True:
+            aitpi.takeInput(input("Input: "))
+finally:
     aef.shutdown()

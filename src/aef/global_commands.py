@@ -35,13 +35,13 @@ class GlobalCommands:
             PdHandler.pdAction(
                 "global_record", "open loop.wav, global_record start", 3000
             )  # start record
-            router.sendMessage(OutputMessage("*", "STATUS"))
+            router.sendMessage(OutputMessage(["*", "STATUS"]))
             GlobalCommands.isRecording = True
         else:
             PdHandler.pdAction("global_record", "stop", 3000)  # stop record
-            router.sendMessage(OutputMessage(" ", "STATUS"))
+            router.sendMessage(OutputMessage([" ", "STATUS"]))
             GlobalCommands.isRecording = False
-        router.sendMessage(OutputMessage("", "REFRESH"))
+        router.sendMessage(OutputMessage(["", "REFRESH"]))
 
     _volume = 80
 
@@ -64,8 +64,8 @@ class GlobalCommands:
         if GlobalCommands.isRecording:
             # PdHandler.pdAction(Looper.prefix + "write", "stop", 2999) # stop record
             PdHandler.pdAction("global_record", "stop", 3000)  # stop record
-            router.sendMessage(OutputMessage(" ", "STATUS"))
-            router.sendMessage(OutputMessage("", "REFRESH"))
+            router.sendMessage(OutputMessage([" ", "STATUS"]))
+            router.sendMessage(OutputMessage(["", "REFRESH"]))
             GlobalCommands.isRecording = False
             sleep(0.1)
             GlobalCommands.playLoop()
