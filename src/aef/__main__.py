@@ -7,7 +7,10 @@ from aef.pd_parser import PdParser
 from aef.log import *
 from aef import shell
 from aef import blutooth_control
+import time
 
+from aef import commands
+from aef.msg_list import Message
 
 class OutputWatch:
     def consume(self, msg):
@@ -28,5 +31,8 @@ try:
     else:
         while True:
             aitpi.takeInput(input("Input: "))
+except KeyboardInterrupt:
+    pass
 finally:
+    pass
     aef.shutdown()

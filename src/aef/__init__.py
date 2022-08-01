@@ -31,6 +31,7 @@ def _copyDefaults():
 
 
 def getCommands():
+    print("Got commands")
     return aitpi.getCommands()
 
 
@@ -107,4 +108,5 @@ def run(effectsFolder, recordingsFolder, presetsFolder, args=None):
 
 
 def changeLink(inputName, newRegLink):
+    print("Changing link")
     aitpi.changeInputRegLink(inputName, newRegLink)
