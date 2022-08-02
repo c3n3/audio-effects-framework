@@ -7,6 +7,7 @@
 import time
 import bluetooth
 from commands import *
+from aef import commands
 
 class BluetoothServer():
     devices = {}
@@ -15,6 +16,7 @@ class BluetoothServer():
         self.commands = {}
         self.port = 1
         self.sock = None
+
     def connect(self, addr):
         if (self.sock):
             self.sock.close()
@@ -32,12 +34,9 @@ class BluetoothServer():
             l[name] = bdaddr
         BluetoothServer.devices = l
 
-    def updateCommand(self, key, value):
-        self.sock.send(createChangeCommand(key, value))
-
-    def sync(self):
+    def send(self, command):
         got = ""
-        self.sock.send(createGetCommands())
+        self.sock.send(command.serialize())
         start = time.time()
         while (True):
             if (time.time() - start > 5):
@@ -45,8 +44,15 @@ class BluetoothServer():
                 break
             got += self.sock.recv(1000).decode()
             try:
-                self.commands = json.loads(got)["values"]
-                break
-            except:
+                ret = json.loads(got)
+                return ret
+            except json.JSONDecodeError:
                 print("Invalid json")
 
+if __name__ == "__main__":
+    BluetoothServer.lookUpNearbyBluetoothDevices()
+
+    server = BluetoothServer()
+    server.connect(input("Addr: "))
+    com = commands.GetCommands()
+    print("Got", server.send(com))

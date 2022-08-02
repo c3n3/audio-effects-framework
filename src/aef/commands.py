@@ -70,4 +70,5 @@ def handleCommand(string):
         command.setData(data)
         command.execute()
         return command.response()
-
+    else:
+        elog("Invalid command", string)

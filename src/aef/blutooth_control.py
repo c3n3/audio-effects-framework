@@ -8,6 +8,8 @@
 from time import sleep
 import bluetooth
 from aef.log import *
+import json
+from aef.commands import handleCommand
 
 class BlueToothHandler():
     def __init__(self):
@@ -25,18 +27,13 @@ class BlueToothHandler():
         ilog ("Accepted connection from " + str(address))
 
     def listen(self):
-        # data = json.loads(self.cli.recv(1024).decode())
-        self.executeCommand(self.cli.recv(1024).decode())
-
-    def executeCommand(self, val):
-        print(val)
-        # aef.changeLink(val["key"], val["value"])
+        send = handleCommand(self.cli.recv(1024).decode())
+        self.send(json.dumps(send))
 
     def close(self):
         if self.cli:
             self.cli.close()
         self.server_sock.close()
-
 
     def send(self, string):
         for i in range((len(string) // 1000) + 1):
@@ -45,10 +42,6 @@ class BlueToothHandler():
                 end = len(string)
             send = string[i*1000:end]
             self.cli.send(send)
-
-effects = "../default_effects/"
-presets = "../default_presets/"
-recordings = "./recordings/"
 
 def run():
     while (True):
