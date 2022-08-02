@@ -1,7 +1,5 @@
-from operator import truediv
 import os
 from time import sleep
-from turtle import back
 from aef.constants import Constants
 from aef.settings import GS_temp, GlobalSettings
 from aef.jack_node import JackNode
