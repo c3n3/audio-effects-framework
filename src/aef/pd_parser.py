@@ -175,7 +175,10 @@ class PdParser:
         self.subPatchIndex = 0
         resultantFile = "#N canvas 201 290 450 300 12;\n"
         for file in files:
-            resultantFile += self.parseFile(file)
+            result = self.parseFile(file)
+            if result is None:
+                continue
+            resultantFile += result
 
             # End of canvas
             resultantFile += f"#X restore 100 {self.subPatchIndex * 25 + 100} pd {self.makeCanvasName(file.split('/').pop())};\n"
