@@ -8,6 +8,7 @@ import time
 import bluetooth
 from commands import *
 from aef import commands
+from aef.msg_list import *
 
 class BluetoothServer():
     devices = {}
@@ -47,12 +48,16 @@ class BluetoothServer():
                 ret = json.loads(got)
                 return ret
             except json.JSONDecodeError:
-                print("Invalid json")
+                pass
 
 if __name__ == "__main__":
     BluetoothServer.lookUpNearbyBluetoothDevices()
 
     server = BluetoothServer()
     server.connect(input("Addr: "))
-    com = commands.GetCommands()
+    com = commands.AitpiMsg()
+    m = EffectsMessage("")
+    m.event = "0"
+    m.name = "Delay.pd"
+    com.use(m)
     print("Got", server.send(com))
