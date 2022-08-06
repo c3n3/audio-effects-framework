@@ -12,7 +12,7 @@ class JackHandler:
     """
 
     globalPdPid = -1
-    jackdProc = -1
+    jackdProc = None
 
     @staticmethod
     def init():
@@ -79,5 +79,6 @@ class JackHandler:
     def jackStop():
         """Stops jack
         """
-        JackHandler.jackdProc.kill()
-        JackHandler.jackdProc.wait()
+        if JackHandler.jackdProc != None:
+            JackHandler.jackdProc.kill()
+            JackHandler.jackdProc.wait()

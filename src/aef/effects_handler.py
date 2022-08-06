@@ -11,9 +11,9 @@ class EffectsHandler:
     @staticmethod
     def consume(msg):
         if msg.event == "0":
-            PdHandler.toggleFile(msg.name)
+            added = PdHandler.toggleFile(msg.name)
             PdHandler.parseFiles()
-            if msg.name in PdParser.filesToHooks:
+            if added and msg.name in PdParser.filesToHooks:
                 dlog("Re-init hooks for", msg.name)
                 sleep(0.2)
                 for hook in PdParser.filesToHooks[msg.name]:

@@ -1,1 +1,52 @@
-{}
+[
+    {
+        "name": "Button10",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "b",
+        "reg_link": "Tremolo.pd"
+    },
+    {
+        "name": "Button11",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "c",
+        "reg_link": "Clean.pre"
+    },
+    {
+        "name": "Button12",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "g",
+        "reg_link": "21Guns.pre"
+    },
+    {
+        "name": "Button13",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "s",
+        "reg_link": "save"
+    },
+    {
+        "name": "Button15",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "z",
+        "reg_link": "Bad.pre"
+    },
+    {
+        "name": "Button14",
+        "type": "button",
+        "mechanism": "key_interrupt",
+        "trigger": "q",
+        "reg_link": ""
+    },
+    {
+        "name": "Encoder 1",
+        "type": "encoder",
+        "mechanism": "key_interrupt",
+        "left_trigger": "j",
+        "right_trigger": "k",
+        "reg_link": "Tremolo__osc_rate"
+    }
+]

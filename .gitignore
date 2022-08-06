@@ -8,3 +8,4 @@ __main__.py
 master.pd
 *.wav
 foldered_commands.temp.json
+build

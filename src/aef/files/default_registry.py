@@ -2,26 +2,30 @@ from aef.constants import Constants
 
 name = Constants.DEFAULT_COMMAND_REGISTRY
 file = """
-{
-    "loop": {
+[
+    {
+        "name": "loop",
         "type": "Sound recording",
         "input_type": "button",
         "id": "1001"
     },
-    "record": {
+    {
+        "name": "record",
         "type": "Sound recording",
         "input_type": "button",
         "id": "1001"
     },
-    "save": {
+    {
+        "name": "save",
         "type": "Sound recording",
         "input_type": "button",
         "id": "1003"
     },
-    "volume": {
+    {
+        "name": "volume",
         "type": "Sound recording",
         "input_type": "encoder",
         "id": "1001"
     }
-}
+]
 """

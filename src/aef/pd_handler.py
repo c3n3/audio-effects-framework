@@ -42,9 +42,12 @@ class PdHandler:
         """
         if file in PdHandler.files:
             PdHandler.files.remove(file)
+            dlog("Effect removed:", PdHandler.files)
+            return False
         else:
             PdHandler.files.append(file)
-        dlog("Effects now contain:", PdHandler.files)
+            dlog("Effect added:", PdHandler.files)
+            return True
 
     @staticmethod
     def initHooks():
