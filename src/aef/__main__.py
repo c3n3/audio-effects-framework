@@ -14,8 +14,7 @@ from aef.msg_list import Message
 
 class OutputWatch:
     def consume(self, msg):
-        print("Msg: %s, Type: %s" % (msg.message, msg.type))
-
+        pass
 try:
     dirname = os.path.dirname(__file__)
     recordingsFolder = os.path.join(dirname, "../../recordings/")

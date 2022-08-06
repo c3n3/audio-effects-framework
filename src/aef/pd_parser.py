@@ -111,7 +111,7 @@ class PdParser:
 
     def addHook(self, string, file):
         hook = RoutingHook(string)
-        if hook.routeId != None:
+        if hook.routeId != None and hook.name != None:
             PdParser.hooks[hook.name] = hook
             simpleName = re.sub(".*/([^/]*?)", "\\1", file)
             if simpleName not in PdParser.filesToHooks:
