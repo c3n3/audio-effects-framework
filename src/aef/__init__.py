@@ -31,8 +31,11 @@ def _copyDefaults():
 
 
 def getCommands():
-    print("Got commands")
     return aitpi.getCommands()
+
+
+def getInputs():
+    return aitpi.getInputs()
 
 
 def shutdown():
