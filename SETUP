@@ -1,0 +1,14 @@
+install aitpi
+- https://github.com/c3n3/AITPI
+pip install watchdog
+setup jack
+- install qjackctl
+- setup jack
+- start without jack-debus service
+Add self to audio user group
+`sudo usermod -a -G caden audio`
+`sudo apt install bluez`
+`sudo apt install pyhton3-bluez`
+`pip install pynput`
+`sudo apt install puredata`
+
