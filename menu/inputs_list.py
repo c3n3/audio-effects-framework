@@ -6,7 +6,7 @@ from PyQt6 import QtGui
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import QEvent
-
+from interface import AefInterface
 from page import Page
 
 interface = LocalInterface()
@@ -22,7 +22,7 @@ class NoKeyPressCombo(QComboBox):
 
 class Selector(QWidget):
     def changeLink(self, text):
-        interface.update(self.input['name'], text)
+        AefInterface.interface.update(self.input['name'], text)
 
     def __init__(self, input, commands):
         super().__init__()
@@ -63,11 +63,11 @@ class SelectorList(QWidget):
 class EncoderButtonList(Page):
     def __init__(self, changePage):
         super().__init__(changePage)
-        buttons = interface.getInputsByType('button')
-        encoders = interface.getInputsByType('encoder')
+        buttons = AefInterface.interface.getInputsByType('button')
+        encoders = AefInterface.interface.getInputsByType('encoder')
 
-        bCommands = interface.getCommandsByInputType('button')
-        eCommands = interface.getCommandsByInputType('encoder')
+        bCommands = AefInterface.interface.getCommandsByInputType('button')
+        eCommands = AefInterface.interface.getCommandsByInputType('encoder')
 
         self.lay = QGridLayout()
 

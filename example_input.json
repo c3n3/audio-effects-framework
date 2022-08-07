@@ -4,14 +4,14 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "b",
-        "reg_link": "Bad.pre"
+        "reg_link": "Chamber.pd"
     },
     {
         "name": "Button11",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "c",
-        "reg_link": "Clean.pre"
+        "reg_link": "21Guns.pre"
     },
     {
         "name": "Button12",
