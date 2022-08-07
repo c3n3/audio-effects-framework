@@ -4,7 +4,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "b",
-        "reg_link": "Tremolo.pd"
+        "reg_link": "Bad.pre"
     },
     {
         "name": "Button11",
@@ -47,6 +47,6 @@
         "mechanism": "key_interrupt",
         "left_trigger": "j",
         "right_trigger": "k",
-        "reg_link": "Tremolo__osc_rate"
+        "reg_link": "8bit__distortion"
     }
 ]

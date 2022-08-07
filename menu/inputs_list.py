@@ -1,22 +1,28 @@
 from json import encoder
 import sys
 from local_interface import LocalInterface
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QKeyEvent
+from PyQt6 import QtGui
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import QEvent
 
+from page import Page
+
 interface = LocalInterface()
 
-class Selector(QWidget):
+class NoKeyPressCombo(QComboBox):
 
+    def keyPressEvent(self, e: QtGui.QKeyEvent) -> None:
+        return QWidget.keyPressEvent(self, e)
+    
+    def __init__(self):
+        super().__init__()
+
+
+class Selector(QWidget):
     def changeLink(self, text):
         interface.update(self.input['name'], text)
-
-    def filter(self, obj, event):
-        if event.type() == QEvent.KeyPress:
-            return False
-        return True
 
     def __init__(self, input, commands):
         super().__init__()
@@ -27,8 +33,7 @@ class Selector(QWidget):
             self.title.setText(input['name'] + f" ({input['left_trigger']},{input['right_trigger']})")
 
         self.input = input
-        self.combo = QComboBox()
-        self.combo.installEventFilter(self.filter)
+        self.combo = NoKeyPressCombo()
         index = 0
         setVal = 0
         for command in commands:
@@ -55,9 +60,9 @@ class SelectorList(QWidget):
         self.selectors.setLayout(self.lay)
         self.setLayout(self.lay)
 
-class EncoderButtonList(QWidget):
-    def __init__(self):
-        super().__init__()
+class EncoderButtonList(Page):
+    def __init__(self, changePage):
+        super().__init__(changePage)
         buttons = interface.getInputsByType('button')
         encoders = interface.getInputsByType('encoder')
 
@@ -74,17 +79,6 @@ class EncoderButtonList(QWidget):
 
         self.setLayout(self.lay)
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.bAndE = EncoderButtonList()
-        self.setCentralWidget(self.bAndE)
-
-try:
-    interface.init()
-    app = QApplication(sys.argv)
-    w = MainWindow()
-    w.show()
-    app.exec()
-finally:
-    interface.close()
+    def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
+        self.changePage(QWidget())
+        return super().keyPressEvent(a0)

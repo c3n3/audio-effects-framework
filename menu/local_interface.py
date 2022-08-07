@@ -2,8 +2,9 @@ import aef
 import aitpi
 import json
 import sys
+from interface import AefInterface
 
-class LocalInterface():
+class LocalInterface(AefInterface):
     """ Handles local aef manipulation
     """
     def init(self):
@@ -30,33 +31,10 @@ class LocalInterface():
         """
         aef.changeLink(key, value)
 
-    def sync(self):
-        """ Syncs the interface with the backend
-        """
-        pass
-
     def getCommnds(self):
         """ Gets commands from the backend
         """
         return aef.getCommands()
-
-    def getInputsByType(self, type):
-        inputs = self.getInputs()
-
-        ret = []
-        for input in inputs:
-            if input['type'] == type:
-                ret.append(input)
-        return ret
-
-    def getCommandsByInputType(self, inType):
-        commands = self.getCommnds()
-
-        ret = []
-        for command in commands:
-            if command['input_type'] == inType:
-                ret.append(command)
-        return ret
 
     def getInputs(self):
         """ Gets inputs from the backend

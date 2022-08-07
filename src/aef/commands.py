@@ -41,6 +41,16 @@ class GetCommands(Command):
         return aef.getCommands()
 
 
+class GetInputs(Command):
+    def response(self):
+        return aef.getInputs()
+
+
+class Ping(Command):
+    def response(self):
+        return {'value': True}
+
+
 class AitpiMsg(Command):
     def use(self, message):
         super().__init__()
