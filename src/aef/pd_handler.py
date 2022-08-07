@@ -164,6 +164,7 @@ class PdHandler:
             action (str): the action string
             port (int, optional): The port to send it over. Defaults to 3000.
         """
+        action = action.replace(".", "\.")
         command = "echo {} {} \; | pdsend {} >> {}".format(
             prefix,
             action,

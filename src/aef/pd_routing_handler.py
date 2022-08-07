@@ -14,7 +14,7 @@ class PdRoutingHandler:
     @staticmethod
     def update(hook):
         dlog("Updating hook", hook.routeId, hook.current)
-        PdHandler.pdAction(hook.routeId, hook.current, 2999)
+        PdHandler.pdAction(hook.routeId, str(hook.current), 2999)
 
     @staticmethod
     def consume(msg):

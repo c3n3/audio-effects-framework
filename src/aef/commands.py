@@ -71,7 +71,7 @@ class AitpiMsg(Command):
     def execute(self):
         router.send(self.getMsg())
 
-validCommands = {"ChangeLink": ChangeLink, "AitpiMsg": AitpiMsg, "GetCommands": GetCommands}
+validCommands = {"ChangeLink": ChangeLink, "AitpiMsg": AitpiMsg, "GetCommands": GetCommands, "Ping": Ping, "GetInputs": GetInputs}
 
 def handleCommand(string):
     data = json.loads(string)
