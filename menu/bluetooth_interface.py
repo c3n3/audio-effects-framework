@@ -4,6 +4,7 @@ from aef import commands
 import json
 from aef.msg_list import *
 from aef.log import *
+from interface import AefInterface
 
 class BluetoothServer():
     devices = {}
@@ -61,7 +62,7 @@ class BluetoothServer():
                 pass
 
 
-class BluetootInterface():
+class BluetootInterface(AefInterface):
     def init(self):
         """ What happens when a user starts the app
         """

@@ -11,7 +11,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "c",
-        "reg_link": "Viola.pd"
+        "reg_link": "21Guns.pre"
     },
     {
         "name": "Button12",
