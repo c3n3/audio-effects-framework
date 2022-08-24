@@ -80,5 +80,4 @@ class EncoderButtonList(Page):
         self.setLayout(self.lay)
 
     def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
-        self.changePage(QWidget())
         return super().keyPressEvent(a0)

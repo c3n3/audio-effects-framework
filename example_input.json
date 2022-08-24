@@ -11,7 +11,7 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "c",
-        "reg_link": "21Guns.pre"
+        "reg_link": "record"
     },
     {
         "name": "Button12",
@@ -25,14 +25,14 @@
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "s",
-        "reg_link": "save"
+        "reg_link": "Delay.pd"
     },
     {
         "name": "Button15",
         "type": "button",
         "mechanism": "key_interrupt",
         "trigger": "z",
-        "reg_link": "21Guns.pre"
+        "reg_link": "Chamber.pd"
     },
     {
         "name": "Button14",
@@ -47,6 +47,6 @@
         "mechanism": "key_interrupt",
         "left_trigger": "j",
         "right_trigger": "k",
-        "reg_link": "Reverb__wet"
+        "reg_link": ""
     }
 ]
