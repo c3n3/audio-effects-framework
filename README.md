@@ -1,6 +1,23 @@
 # Audio effects framework
 The audio effects framework is a python module that allows for easy use of audio effects created in puredata (https://puredata.info).
 
+## Dependencies
+
+These installs are needed for core functionality:
+
+```
+pip install watchdog
+pip install aitpi
+sudo apt install puredata
+sudo apt install jackd
+```
+
+Depending on your use case, these packages may be needed:
+
+For aitpi keyboard input - `pip install pynput`
+For the GUI app - `pip install PyQt6`
+For bluetooth - `sudo apt install bluez python-bluez`
+
 ## Use
 The audio effect framework was built upon the AITPI system (https://github.com/c3n3/AITPI). This system is used in order to control the application and modification of the audio effects framework. It allows inputs (currently supported keyboard input, raspberry pi GPIO buttons, and raspberry pi GPIO encoders) to be written in JSON to control what audio effects are applied in real time. These inputs are to be expanded over time.
 
@@ -34,7 +51,7 @@ NOTE: Currently the setup is to use Qjackctl with a preset named 'guitar-module'
 
 See https://github.com/c3n3/AITPI. The possible commands to link to are all listed out in the temp folder.
 
->> NOTE: wherever you run the aef, it will create a ./temp/ folder in the local directory. This will contain all temporary files such as recordings, puredata temp files, and the command registry.
+>> NOTE: wherever you run the aef, it will create a ./temp/ folder in the local directory. This will contain all temporary files such as recordings, puredata temp files, and the command registry. This allows for persistent saves, if everything is run from the same directories.
 
 Currently you can retrieve these commands by calling:
 
