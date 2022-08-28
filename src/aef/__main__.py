@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from ast import Global
 import aef
 import sys
 import os
@@ -38,6 +39,8 @@ try:
     presetsFolder = os.path.join(dirname, "../../default_presets/")
     aef.run(effectsFolder, recordingsFolder, presetsFolder, sys.argv)
     inputJson = os.path.join(dirname, "../../example_input.json")
+    if GlobalSettings.settings['inputs'] != "":
+        inputJson = GlobalSettings.settings['inputs']
     aitpi.initInput(inputJson)
     router.addConsumer([1004], OutputWatch())
 

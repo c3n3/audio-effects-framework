@@ -130,7 +130,7 @@ class GlobalSettings:
             Setting("scale_volume", "5", []),
             Setting("log_folder", "", []),
             Setting("log_level", "Debug", ["Debug", "Info", "Warning", "Error"]),
-            Setting("log_level", "Debug", ["Debug", "Info", "Warning", "Error"]),
+            Setting("inputs", "", []),
             Setting("presets_dir", "", []),
             Setting("effects_dir", "", []),
             Setting("bluetooth", "False", ["True", "False"]),
