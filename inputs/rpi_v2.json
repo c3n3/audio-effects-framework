@@ -1,0 +1,80 @@
+[
+    {
+        "name": "Button 1",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "6",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 2",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "13",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 3",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "12",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 4",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "5",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 5",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "15",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 6",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "14",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 7",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "19",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 8",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "18",
+        "reg_link": ""
+    },
+    {
+        "name": "Button 9",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "7",
+        "reg_link": ""
+    },
+    {
+        "name": "Button Encoder",
+        "type": "button",
+        "mechanism": "rpi_gpio",
+        "trigger": "7",
+        "reg_link": ""
+    },
+    {
+        "name": "Encoder",
+        "type": "encoder",
+        "mechanism": "rpi_gpio",
+        "left_trigger": "17",
+        "right_trigger": "23",
+        "reg_link": ""
+    }
+]
